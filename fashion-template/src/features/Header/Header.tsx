@@ -54,12 +54,12 @@ export default function Header({ fullWidth = false }: HeaderProps) {
                                 </Link>
                             </li>
                             <li className="nav-cart">
-                                <a href="#shoppingCart" data-bs-toggle="offcanvas" className="nav-icon-item">
+                                <Link to="/view-cart" className="nav-icon-item">
                                     <i className="icon icon-cart" />
                                     <span className="count-box">
                                         <CartLength />
                                     </span>
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     </div>

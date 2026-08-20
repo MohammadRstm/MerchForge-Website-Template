@@ -1,10 +1,14 @@
 import { useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
 import "../public/scss/main.scss";
 import { ShopProvider } from "./context/Shop/ShopContext";
 import Topbar from "./features/Header/components/Topbar";
 import Header from "./features/Header/Header";
 import Footer from "./features/Footer/Footer";
 import Home from "./features/Home/Home";
+import ProductDetail from "./features/ProductDetail/ProductDetail";
+import Cart from "./features/Cart/Cart";
+import NotFound from "./features/NotFound/NotFound";
 import ScrollTop from "./components/ScrollTop/ScrollTop";
 import WOW from "./utlis/wow";
 
@@ -71,7 +75,12 @@ function App() {
         <ShopProvider>
             <Topbar />
             <Header />
-            <Home />
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/product-detail/:id" element={<ProductDetail />} />
+                <Route path="/view-cart" element={<Cart />} />
+                <Route path="*" element={<NotFound />} />
+            </Routes>
             <Footer />
             <ScrollTop />
         </ShopProvider>

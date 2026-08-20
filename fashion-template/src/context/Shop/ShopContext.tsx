@@ -15,6 +15,7 @@ export interface ShopContextValue {
     addProductToCart: (id: number, qty?: number, isModal?: boolean) => void;
     isAddedToCartProducts: (id: number) => boolean;
     updateQuantity: (id: number, qty: number) => void;
+    removeFromCart: (id: number) => void;
 
     wishList: number[];
     addToWishlist: (id: number) => void;
@@ -96,6 +97,10 @@ export function ShopProvider({ children }: { children: ReactNode }) {
         setCartProducts((pre) => pre.map((elm) => (elm.id === id ? { ...elm, quantity: qty } : elm)));
     };
 
+    const removeFromCart = (id: number) => {
+        setCartProducts((pre) => pre.filter((elm) => elm.id !== id));
+    };
+
     const addToWishlist = (id: number) => {
         setWishList((pre) => (pre.includes(id) ? pre.filter((elm) => elm !== id) : [...pre, id]));
     };
@@ -131,6 +136,7 @@ export function ShopProvider({ children }: { children: ReactNode }) {
         addProductToCart,
         isAddedToCartProducts,
         updateQuantity,
+        removeFromCart,
 
         wishList,
         addToWishlist,

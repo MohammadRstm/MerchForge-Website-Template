@@ -66,3 +66,36 @@ export const testimonials: Testimonial[] = [
         testimonialImgHeight: 465,
     },
 ];
+
+export interface CartTestimonial {
+    imgSrc: string;
+    imgWidth: number;
+    imgHeight: number;
+    name: string;
+    review: string;
+}
+
+/** Rendered by the cart page sidebar's testimonial swiper. */
+export const testimonials12: CartTestimonial[] = [
+    {
+        imgSrc: "/images/avatar/avt-1.png",
+        imgWidth: 64,
+        imgHeight: 64,
+        name: "Vinetant P.",
+        review: "Stylish, comfortable, and perfect for any occasion! My new favorite fashion destination.",
+    },
+    {
+        imgSrc: "/images/avatar/blog-author-3.jpg",
+        imgWidth: 100,
+        imgHeight: 100,
+        name: "Themesflat",
+        review: "Stylish, comfortable, and perfect for any occasion! My new favorite fashion destination.",
+    },
+    {
+        imgSrc: "/images/avatar/blog-author-2.jpg",
+        imgWidth: 100,
+        imgHeight: 100,
+        name: "Henry P.",
+        review: "Stylish, comfortable, and perfect for any occasion! My new favorite fashion destination.",
+    },
+];

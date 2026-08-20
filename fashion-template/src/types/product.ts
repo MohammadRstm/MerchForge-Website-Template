@@ -26,6 +26,8 @@ export interface Product {
     sizes?: string[];
     colors?: ProductColorOption[];
     saleLabel?: string | null;
+    /** Stacked badges (e.g. "New", "Best Seller") shown by the style-2 card. */
+    saleTags?: string[];
     isTrending?: boolean;
     isOutofSale?: boolean;
     /** Countdown deadline in epoch ms; presence alone triggers the countdown badge. */

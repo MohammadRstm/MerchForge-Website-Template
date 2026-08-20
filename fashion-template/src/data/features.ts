@@ -4,7 +4,7 @@ export interface IconFeature {
     description: string;
 }
 
-/** Rendered by the fine-print icon strip at the bottom of the page. */
+/** Rendered by the cart page's shipping/returns/support icon row. */
 export const iconFeatures: IconFeature[] = [
     { iconClass: "icon-shipping", title: "Free Shipping", description: "Enjoy free shipping on all orders" },
     { iconClass: "icon-gift", title: "Gift Package", description: "Perfectly packaged for gifting" },
