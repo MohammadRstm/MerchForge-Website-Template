@@ -9,6 +9,10 @@ import Home from "./features/Home/Home";
 import ProductDetail from "./features/ProductDetail/ProductDetail";
 import Cart from "./features/Cart/Cart";
 import Wishlist from "./features/Wishlist/Wishlist";
+import AboutUs from "./features/AboutUs/AboutUs";
+import ContactUs from "./features/ContactUs/ContactUs";
+import StoreLocation from "./features/StoreLocation/StoreLocation";
+import ComingSoon from "./features/ComingSoon/ComingSoon";
 import NotFound from "./features/NotFound/NotFound";
 import ScrollTop from "./components/ScrollTop/ScrollTop";
 import WOW from "./utlis/wow";
@@ -81,6 +85,10 @@ function App() {
                 <Route path="/product-detail/:id" element={<ProductDetail />} />
                 <Route path="/view-cart" element={<Cart />} />
                 <Route path="/wish-list" element={<Wishlist />} />
+                <Route path="/about-us" element={<AboutUs />} />
+                <Route path="/contact-us" element={<ContactUs />} />
+                <Route path="/store-location" element={<StoreLocation />} />
+                <Route path="/coming-soon" element={<ComingSoon />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
             <Footer />
