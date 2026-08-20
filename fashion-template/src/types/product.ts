@@ -27,6 +27,8 @@ export interface Product {
     oldPrice: number | null;
     inStock: boolean;
     category: ProductCategory;
+    /** ISO date the product was added to the catalog — drives the "New Arrivals" section. */
+    createdAt: string;
     sizes?: string[];
     colors?: ProductColorOption[];
     saleLabel?: string | null;

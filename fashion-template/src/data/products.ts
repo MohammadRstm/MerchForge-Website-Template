@@ -16,6 +16,7 @@ export const products1: Product[] = [
     {
         id: 1,
         category: "men",
+        createdAt: "2026-07-01",
         imgSrc: "/images/products/fashion/product-3.jpg",
         imgHover: "/images/products/fashion/product-4.jpg",
         width: 684,
@@ -35,6 +36,7 @@ export const products1: Product[] = [
     {
         id: 2,
         category: "women",
+        createdAt: "2026-07-15",
         imgSrc: "/images/products/fashion/product-29.jpg",
         imgHover: "/images/products/fashion/product-29.jpg",
         width: 684,
@@ -51,6 +53,7 @@ export const products1: Product[] = [
     {
         id: 3,
         category: "kids",
+        createdAt: "2026-06-10",
         imgSrc: "/images/products/fashion/product-1.jpg",
         imgHover: "/images/products/fashion/product-5.jpg",
         width: 684,
@@ -71,6 +74,7 @@ export const products1: Product[] = [
     {
         id: 4,
         category: "men",
+        createdAt: "2026-08-19",
         imgSrc: "/images/products/fashion/product-4.jpg",
         imgHover: "/images/products/fashion/product-4.jpg",
         width: 684,
@@ -89,6 +93,7 @@ export const products1: Product[] = [
     {
         id: 5,
         category: "women",
+        createdAt: "2026-06-20",
         imgSrc: "/images/products/fashion/women-yellow-2.jpg",
         imgHover: "/images/products/fashion/product-28.jpg",
         width: 828,
@@ -108,6 +113,7 @@ export const products1: Product[] = [
     {
         id: 6,
         category: "kids",
+        createdAt: "2026-07-25",
         imgSrc: "/images/products/fashion/product-26.jpg",
         imgHover: "/images/products/fashion/product-26.jpg",
         width: 684,
@@ -131,6 +137,7 @@ export const products4: Product[] = [
     {
         id: 18,
         category: "men",
+        createdAt: "2026-08-20",
         imgSrc: "/images/products/fashion/product-5.jpg",
         imgHover: "/images/products/fashion/product-4.jpg",
         width: 684,
@@ -151,6 +158,7 @@ export const products4: Product[] = [
     {
         id: 19,
         category: "women",
+        createdAt: "2026-06-05",
         imgSrc: "/images/products/fashion/product-12.jpg",
         imgHover: "/images/products/fashion/product-7.jpg",
         width: 684,
@@ -172,6 +180,7 @@ export const products4: Product[] = [
     {
         id: 20,
         category: "kids",
+        createdAt: "2026-08-17",
         imgSrc: "/images/products/fashion/product-11.jpg",
         imgHover: "/images/products/fashion/product-10.jpg",
         width: 684,
@@ -191,6 +200,7 @@ export const products4: Product[] = [
     {
         id: 21,
         category: "men",
+        createdAt: "2026-07-05",
         imgSrc: "/images/products/fashion/product-31.jpg",
         imgHover: "/images/products/fashion/product-27.jpg",
         width: 684,
@@ -211,6 +221,7 @@ export const products4: Product[] = [
     {
         id: 22,
         category: "women",
+        createdAt: "2026-06-15",
         imgSrc: "/images/products/fashion/product-13.jpg",
         imgHover: "/images/products/fashion/product-14.jpg",
         width: 684,
@@ -230,6 +241,7 @@ export const products4: Product[] = [
     {
         id: 23,
         category: "kids",
+        createdAt: "2026-08-10",
         imgSrc: "/images/products/fashion/product-26.jpg",
         imgHover: "/images/products/fashion/product-26.jpg",
         width: 684,
@@ -254,6 +266,7 @@ export const products5: Product[] = [
     {
         id: 24,
         category: "men",
+        createdAt: "2026-07-20",
         imgSrc: "/images/products/fashion/product-10.jpg",
         imgHover: "/images/products/fashion/product-1.jpg",
         width: 684,
@@ -274,6 +287,7 @@ export const products5: Product[] = [
     {
         id: 25,
         category: "women",
+        createdAt: "2026-06-25",
         imgSrc: "/images/products/fashion/product-16.jpg",
         imgHover: "/images/products/fashion/product-17.jpg",
         width: 684,
@@ -295,6 +309,7 @@ export const products5: Product[] = [
     {
         id: 26,
         category: "kids",
+        createdAt: "2026-08-05",
         imgSrc: "/images/products/fashion/product-32.jpg",
         imgHover: "/images/products/fashion/product-32.jpg",
         width: 684,
@@ -315,6 +330,7 @@ export const products5: Product[] = [
     {
         id: 27,
         category: "men",
+        createdAt: "2026-07-10",
         imgSrc: "/images/products/fashion/product-33.jpg",
         imgHover: "/images/products/fashion/product-31.jpg",
         width: 684,
@@ -335,6 +351,7 @@ export const products5: Product[] = [
     {
         id: 28,
         category: "women",
+        createdAt: "2026-06-30",
         imgSrc: "/images/products/fashion/product-13.jpg",
         imgHover: "/images/products/fashion/product-14.jpg",
         width: 684,
@@ -354,6 +371,7 @@ export const products5: Product[] = [
     {
         id: 29,
         category: "kids",
+        createdAt: "2026-08-15",
         imgSrc: "/images/products/fashion/product-26.jpg",
         imgHover: "/images/products/fashion/product-26.jpg",
         width: 684,

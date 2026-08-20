@@ -2,6 +2,7 @@ import MetaComponent from "../../components/MetaComponent/MetaComponent";
 import ProductsModal from "../../components/ProductsModal/ProductsModal";
 import Brands from "../../components/Brands/Brands";
 import Hero from "./components/Hero";
+import NewArrivals from "./components/NewArrivals";
 import Products from "./components/Products";
 import Banner from "./components/Banner";
 import Products2 from "./components/Products2";
@@ -21,6 +22,7 @@ export default function Home() {
         <>
             <MetaComponent meta={metadata} />
             <Hero />
+            <NewArrivals />
             <Products />
             <Banner />
             <Products2 />
