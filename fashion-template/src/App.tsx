@@ -8,6 +8,7 @@ import Footer from "./features/Footer/Footer";
 import Home from "./features/Home/Home";
 import ProductDetail from "./features/ProductDetail/ProductDetail";
 import Cart from "./features/Cart/Cart";
+import Wishlist from "./features/Wishlist/Wishlist";
 import NotFound from "./features/NotFound/NotFound";
 import ScrollTop from "./components/ScrollTop/ScrollTop";
 import WOW from "./utlis/wow";
@@ -79,6 +80,7 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/product-detail/:id" element={<ProductDetail />} />
                 <Route path="/view-cart" element={<Cart />} />
+                <Route path="/wish-list" element={<Wishlist />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
             <Footer />
