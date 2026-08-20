@@ -24,7 +24,7 @@ export default function Hero() {
                                 <img src={item.imgSrc} alt={item.alt} className="lazyload" width={610} height={840} />
                             </div>
                             <div className="content">
-                                <Link to="/shop-default" className="tf-btn btn-white hover-icon-2 hover-dark">
+                                <Link to={`/shop-default?category=${item.category}`} className="tf-btn btn-white hover-icon-2 hover-dark">
                                     {item.buttonText}
                                     <i className="icon-arrow-right icon" />
                                 </Link>

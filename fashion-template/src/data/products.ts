@@ -15,6 +15,7 @@ import type { Product } from "../types/product";
 export const products1: Product[] = [
     {
         id: 1,
+        category: "men",
         imgSrc: "/images/products/fashion/product-3.jpg",
         imgHover: "/images/products/fashion/product-4.jpg",
         width: 684,
@@ -33,6 +34,7 @@ export const products1: Product[] = [
     },
     {
         id: 2,
+        category: "women",
         imgSrc: "/images/products/fashion/product-29.jpg",
         imgHover: "/images/products/fashion/product-29.jpg",
         width: 684,
@@ -48,6 +50,7 @@ export const products1: Product[] = [
     },
     {
         id: 3,
+        category: "kids",
         imgSrc: "/images/products/fashion/product-1.jpg",
         imgHover: "/images/products/fashion/product-5.jpg",
         width: 684,
@@ -67,6 +70,7 @@ export const products1: Product[] = [
     },
     {
         id: 4,
+        category: "men",
         imgSrc: "/images/products/fashion/product-4.jpg",
         imgHover: "/images/products/fashion/product-4.jpg",
         width: 684,
@@ -84,6 +88,7 @@ export const products1: Product[] = [
     },
     {
         id: 5,
+        category: "women",
         imgSrc: "/images/products/fashion/women-yellow-2.jpg",
         imgHover: "/images/products/fashion/product-28.jpg",
         width: 828,
@@ -102,6 +107,7 @@ export const products1: Product[] = [
     },
     {
         id: 6,
+        category: "kids",
         imgSrc: "/images/products/fashion/product-26.jpg",
         imgHover: "/images/products/fashion/product-26.jpg",
         width: 684,
@@ -124,6 +130,7 @@ export const products1: Product[] = [
 export const products4: Product[] = [
     {
         id: 18,
+        category: "men",
         imgSrc: "/images/products/fashion/product-5.jpg",
         imgHover: "/images/products/fashion/product-4.jpg",
         width: 684,
@@ -143,6 +150,7 @@ export const products4: Product[] = [
     },
     {
         id: 19,
+        category: "women",
         imgSrc: "/images/products/fashion/product-12.jpg",
         imgHover: "/images/products/fashion/product-7.jpg",
         width: 684,
@@ -163,6 +171,7 @@ export const products4: Product[] = [
     },
     {
         id: 20,
+        category: "kids",
         imgSrc: "/images/products/fashion/product-11.jpg",
         imgHover: "/images/products/fashion/product-10.jpg",
         width: 684,
@@ -181,6 +190,7 @@ export const products4: Product[] = [
     },
     {
         id: 21,
+        category: "men",
         imgSrc: "/images/products/fashion/product-31.jpg",
         imgHover: "/images/products/fashion/product-27.jpg",
         width: 684,
@@ -200,6 +210,7 @@ export const products4: Product[] = [
     },
     {
         id: 22,
+        category: "women",
         imgSrc: "/images/products/fashion/product-13.jpg",
         imgHover: "/images/products/fashion/product-14.jpg",
         width: 684,
@@ -218,6 +229,7 @@ export const products4: Product[] = [
     },
     {
         id: 23,
+        category: "kids",
         imgSrc: "/images/products/fashion/product-26.jpg",
         imgHover: "/images/products/fashion/product-26.jpg",
         width: 684,
@@ -241,6 +253,7 @@ export const products4: Product[] = [
 export const products5: Product[] = [
     {
         id: 24,
+        category: "men",
         imgSrc: "/images/products/fashion/product-10.jpg",
         imgHover: "/images/products/fashion/product-1.jpg",
         width: 684,
@@ -260,6 +273,7 @@ export const products5: Product[] = [
     },
     {
         id: 25,
+        category: "women",
         imgSrc: "/images/products/fashion/product-16.jpg",
         imgHover: "/images/products/fashion/product-17.jpg",
         width: 684,
@@ -280,6 +294,7 @@ export const products5: Product[] = [
     },
     {
         id: 26,
+        category: "kids",
         imgSrc: "/images/products/fashion/product-32.jpg",
         imgHover: "/images/products/fashion/product-32.jpg",
         width: 684,
@@ -299,6 +314,7 @@ export const products5: Product[] = [
     },
     {
         id: 27,
+        category: "men",
         imgSrc: "/images/products/fashion/product-33.jpg",
         imgHover: "/images/products/fashion/product-31.jpg",
         width: 684,
@@ -318,6 +334,7 @@ export const products5: Product[] = [
     },
     {
         id: 28,
+        category: "women",
         imgSrc: "/images/products/fashion/product-13.jpg",
         imgHover: "/images/products/fashion/product-14.jpg",
         width: 684,
@@ -336,6 +353,7 @@ export const products5: Product[] = [
     },
     {
         id: 29,
+        category: "kids",
         imgSrc: "/images/products/fashion/product-26.jpg",
         imgHover: "/images/products/fashion/product-26.jpg",
         width: 684,

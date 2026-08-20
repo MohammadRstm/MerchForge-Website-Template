@@ -5,6 +5,9 @@ export interface ProductColorOption {
     img: string;
 }
 
+/** Which shop-page section a product belongs to. */
+export type ProductCategory = "men" | "women" | "kids";
+
 /**
  * Placeholder catalog shape, carried over from the template's dummy data.
  *
@@ -23,6 +26,7 @@ export interface Product {
     price: number;
     oldPrice: number | null;
     inStock: boolean;
+    category: ProductCategory;
     sizes?: string[];
     colors?: ProductColorOption[];
     saleLabel?: string | null;
