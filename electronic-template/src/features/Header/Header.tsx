@@ -31,7 +31,7 @@ export default function Header() {
 
                         <div className="col-xl-2 col-md-4 col-6 text-center">
                             <Link to="/" className="logo-header">
-                                <img alt="logo" className="logo" src="/images/logo/logo.svg" width={148} height={44} />
+                                <span className="logo-text">Your Logo</span>
                             </Link>
                         </div>
 
