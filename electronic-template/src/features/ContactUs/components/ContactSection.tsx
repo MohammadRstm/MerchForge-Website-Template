@@ -35,7 +35,7 @@ export default function ContactSection() {
             <div className="container">
                 <div className="row">
                     <div className="col-lg-12">
-                        <div className="wg-map">
+                        <div className="wg-map" id="store-map">
                             <iframe
                                 src={MAP_EMBED_SRC}
                                 className="map"

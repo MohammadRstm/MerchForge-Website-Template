@@ -6,7 +6,7 @@ import Reviews from "./Reviews";
 
 const sections = [
     { id: "description", label: "Descriptions", Content: Description },
-    { id: "material", label: "Materials", Content: Material },
+    { id: "material", label: "Care & Safety", Content: Material },
     { id: "returnPolicies", label: "Return Policies", Content: ReturnPolicies },
     { id: "additionalInfo", label: "Additional Information", Content: AdditionalInfo },
     { id: "reviews", label: "Reviews", Content: Reviews, bodyClass: "wd-customer-review" },

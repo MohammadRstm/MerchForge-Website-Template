@@ -3,27 +3,27 @@ export default function AdditionalInfo() {
         <table className="tb-info-product text-md">
             <tbody>
                 <tr className="tb-attr-item">
-                    <th className="tb-attr-label">Material</th>
-                    <td className="tb-attr-value">
-                        <p>100% Cotton</p>
-                    </td>
-                </tr>
-                <tr className="tb-attr-item">
-                    <th className="tb-attr-label">Color</th>
-                    <td className="tb-attr-value">
-                        <p>White, Black, Brown</p>
-                    </td>
-                </tr>
-                <tr className="tb-attr-item">
                     <th className="tb-attr-label">Brand</th>
                     <td className="tb-attr-value">
                         <p>MerchForge</p>
                     </td>
                 </tr>
                 <tr className="tb-attr-item">
-                    <th className="tb-attr-label">Size</th>
+                    <th className="tb-attr-label">Connectivity</th>
                     <td className="tb-attr-value">
-                        <p>S, M, L, XL</p>
+                        <p>Bluetooth 5.3, USB-C</p>
+                    </td>
+                </tr>
+                <tr className="tb-attr-item">
+                    <th className="tb-attr-label">Battery Life</th>
+                    <td className="tb-attr-value">
+                        <p>Up to 20 hours per charge</p>
+                    </td>
+                </tr>
+                <tr className="tb-attr-item">
+                    <th className="tb-attr-label">Warranty</th>
+                    <td className="tb-attr-value">
+                        <p>12-month manufacturer warranty</p>
                     </td>
                 </tr>
             </tbody>

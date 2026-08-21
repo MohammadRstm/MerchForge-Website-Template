@@ -11,9 +11,9 @@ export default function CustomerQuote() {
                         <i className="icon-star text-green" />
                     </div>
                     <p className="text-xl-2 lh-xl-32">
-                        "Ordered a size I was unsure about and it fit exactly like the size guide said it
-                        would. <br className="d-none d-lg-block" />
-                        First store in a while where that's actually been true."
+                        "Asked a question about compatibility before I ordered and got a real, specific
+                        answer within the hour. <br className="d-none d-lg-block" />
+                        First electronics store I've used where support actually knew the product."
                     </p>
                     <div className="box-author">
                         <div className="avt">

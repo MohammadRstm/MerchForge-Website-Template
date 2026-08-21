@@ -6,9 +6,9 @@ interface ProductHeadingProps {
 
 /**
  * The source's version takes a `product` prop but never actually reads it — every
- * product page shows the same hardcoded "KOTON / Linen Blend Pants / $60.00" no
- * matter which item you're viewing. Wiring the real title/price/sale/stock through
- * here is what makes this page track the product you're actually on.
+ * product page shows the same hardcoded placeholder title/price no matter which item
+ * you're viewing. Wiring the real title/price/sale/stock through here is what makes
+ * this page track the product you're actually on.
  */
 export default function ProductHeading({ product }: ProductHeadingProps) {
     const inStock = product.inStock;
@@ -29,7 +29,11 @@ export default function ProductHeading({ product }: ProductHeadingProps) {
             <div className="product-price">
                 <div className="display-sm price-new price-on-sale">${product.price.toFixed(2)}</div>
                 {product.oldPrice && <div className="display-sm price-old">${product.oldPrice.toFixed(2)}</div>}
-                {product.saleLabel && <span className="badge-sale">{product.saleLabel}</span>}
+                {product.saleLabel.map((label) => (
+                    <span key={label} className="badge-sale">
+                        {label}
+                    </span>
+                ))}
             </div>
             {inStock ? (
                 <div className="product-stock">

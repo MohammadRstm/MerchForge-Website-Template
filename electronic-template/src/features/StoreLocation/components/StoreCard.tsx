@@ -8,7 +8,10 @@ export default function StoreCard({ store }: StoreCardProps) {
     return (
         <div className="box-store">
             <div className="content">
-                <p className="title">{store.name}</p>
+                <p className="title">
+                    <i className="icon icon-location" style={{ marginRight: 6 }} />
+                    {store.name}
+                </p>
                 <ul className="contact-list">
                     <li>
                         <p>

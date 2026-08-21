@@ -5,33 +5,33 @@ export default function WhyChooseUs() {
                 <div className="flat-title-2 text-center">
                     <p className="display-md-2 fw-medium">Why Shop With Us</p>
                     <p className="text-md text-main">
-                        A small catalog, kept small on purpose — every piece is one we're willing to
+                        A tighter catalog than the big marketplaces, kept that way on purpose —
                         <br className="d-none d-lg-block" />
-                        stand behind, not just move off the shelf.
+                        every listing is something we'd actually recommend, not just resell.
                     </p>
                 </div>
                 <div className="row">
                     <div className="col-xl-7 col-md-6">
                         <ul className="list-esd d-md-flex flex-md-column justify-content-md-center h-100">
                             <li className="item">
-                                <h6>Sourced Responsibly</h6>
+                                <h6>Genuine Stock Only</h6>
                                 <p className="text-md">
-                                    We work with a short list of manufacturers we've actually vetted, not the
-                                    cheapest bid — fair labor and mindful materials aren't a marketing line here.
+                                    We buy direct from authorized distributors, not grey-market resellers — every
+                                    device ships with its real warranty intact.
                                 </p>
                             </li>
                             <li className="item">
-                                <h6>Built to Outlast the Trend</h6>
+                                <h6>Tested Before It Ships</h6>
                                 <p className="text-md">
-                                    Classic cuts, honest fabric weights, and stitching that holds up to actual
-                                    wear — not just a good first photo.
+                                    Every unit is powered on and checked before it leaves our warehouse, not just
+                                    pulled off a pallet and boxed.
                                 </p>
                             </li>
                             <li className="item">
-                                <h6>Straightforward Service</h6>
+                                <h6>Support That Knows the Product</h6>
                                 <p className="text-md">
-                                    Real people behind the support inbox, clear sizing info up front, and returns
-                                    that don't require a fight.
+                                    Our team actually uses what we sell, so setup and troubleshooting questions get
+                                    real answers, not a script.
                                 </p>
                             </li>
                         </ul>
@@ -40,7 +40,7 @@ export default function WhyChooseUs() {
                         <div className="image radius-16 overflow-hidden w-100 h-100">
                             <img
                                 src="/images/section/about-2.jpg"
-                                alt="A rack of MerchForge clothing"
+                                alt="Inside the MerchForge warehouse"
                                 className="lazyload w-100 h-100 object-fit-cover"
                                 width={586}
                                 height={586}

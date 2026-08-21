@@ -18,21 +18,21 @@ export interface IconTextFeature {
     description: string;
 }
 
-/** Rendered by the About Us page's "Style Curated Just for You" icon-card carousel. */
-export const styleFeatures: IconTextFeature[] = [
+/** Rendered by the About Us page's "What We Care About" icon-card grid. */
+export const valuesFeatures: IconTextFeature[] = [
     {
         icon: "icon-precision",
-        title: "Built to Last",
-        description: "Every piece goes through the same fit and fabric checks before it earns a spot in the catalog — comfort and durability aren't an afterthought.",
+        title: "Authenticity First",
+        description: "Every product is sourced from an authorized distributor or the manufacturer directly — never a grey-market reseller cutting corners.",
     },
     {
         icon: "icon-elegance",
-        title: "Simple, On Purpose",
-        description: "Clean silhouettes and a restrained palette. Pieces you can mix into whatever you're already wearing, not one-and-done statement buys.",
+        title: "No Upsell Pressure",
+        description: "Straightforward specs and honest comparisons. We'd rather you buy the right device once than the wrong one twice.",
     },
     {
-        icon: "icon-fashion-body",
-        title: "Made for Every Body",
-        description: "A real size range on every product, not just the popular middle sizes. Fit shouldn't be the reason something's out of reach.",
+        icon: "icon-shipping",
+        title: "Fast, Tracked Shipping",
+        description: "Most orders leave the warehouse within 24 hours, with tracking that actually updates — not a placeholder link.",
     },
 ];

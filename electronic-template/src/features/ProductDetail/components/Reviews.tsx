@@ -15,7 +15,7 @@ const reviews: Review[] = [
         avatar: "/images/avatar/blog-author-1.jpg",
         rating: 4,
         comment:
-            "Absolutely stunning! The quality exceeded my expectations. The craftsmanship is top-notch, and the packaging was beautiful. Will definitely return for more!",
+            "Works exactly as described and arrived well within the estimated delivery window. Build quality feels premium for the price. Would buy again!",
     },
     {
         id: 2,
@@ -23,7 +23,7 @@ const reviews: Review[] = [
         date: "Mar 3rd, 2025",
         avatar: "/images/avatar/blog-author-2.jpg",
         rating: 5,
-        comment: "Exactly as pictured, fits great, and the staff was incredibly helpful in guiding me through the selection process. Highly recommend!",
+        comment: "Setup took two minutes and battery life has been excellent so far. Support was quick to answer a question I had before ordering.",
     },
     {
         id: 3,
@@ -31,7 +31,7 @@ const reviews: Review[] = [
         date: "Mar 3rd, 2025",
         avatar: "/images/avatar/blog-author-3.jpg",
         rating: 5,
-        comment: "This shop is my go-to! The designs are elegant, and the prices are reasonable for the quality you get. Amazing service too!",
+        comment: "This is my go-to store for electronics now. Prices are fair, packaging is secure, and everything I've ordered has arrived genuine.",
     },
 ];
 

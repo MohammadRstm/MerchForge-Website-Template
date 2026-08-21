@@ -13,7 +13,7 @@ export default function MetaComponent({ meta }: MetaComponentProps) {
         document.title = meta.title;
 
         return () => {
-            document.title = "Fashion Store";
+            document.title = "Electronics Store";
         };
     }, [meta.title]);
 
