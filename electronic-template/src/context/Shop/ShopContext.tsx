@@ -1,5 +1,5 @@
 import React, { useEffect, useState, type ReactNode } from "react";
-import { allProducts } from "../../data/products";
+import { useCatalog } from "../../hooks/useCatalog";
 import { openCartModal } from "../../utlis/openCartModal";
 import { ShopContext } from "./shopContextObject";
 import type { Product } from "../../types/product";
@@ -12,42 +12,43 @@ export interface ShopContextValue {
     cartProducts: CartItem[];
     setCartProducts: React.Dispatch<React.SetStateAction<CartItem[]>>;
     totalPrice: number;
-    addProductToCart: (id: number, qty?: number, isModal?: boolean) => void;
-    isAddedToCartProducts: (id: number) => boolean;
-    updateQuantity: (id: number, qty: number) => void;
-    removeFromCart: (id: number) => void;
+    addProductToCart: (id: string, qty?: number, isModal?: boolean) => void;
+    isAddedToCartProducts: (id: string) => boolean;
+    updateQuantity: (id: string, qty: number) => void;
+    removeFromCart: (id: string) => void;
 
-    wishList: number[];
-    addToWishlist: (id: number) => void;
-    removeFromWishlist: (id: number) => void;
-    isAddedtoWishlist: (id: number) => boolean;
+    wishList: string[];
+    addToWishlist: (id: string) => void;
+    removeFromWishlist: (id: string) => void;
+    isAddedtoWishlist: (id: string) => boolean;
 
-    compareItem: number[];
-    setCompareItem: React.Dispatch<React.SetStateAction<number[]>>;
-    addToCompareItem: (id: number) => void;
-    removeFromCompareItem: (id: number) => void;
-    isAddedtoCompareItem: (id: number) => boolean;
+    compareItem: string[];
+    setCompareItem: React.Dispatch<React.SetStateAction<string[]>>;
+    addToCompareItem: (id: string) => void;
+    removeFromCompareItem: (id: string) => void;
+    isAddedtoCompareItem: (id: string) => boolean;
 
-    quickViewItem: Product;
-    setQuickViewItem: React.Dispatch<React.SetStateAction<Product>>;
-    quickAddItem: number;
-    setQuickAddItem: React.Dispatch<React.SetStateAction<number>>;
+    quickViewItem: Product | null;
+    setQuickViewItem: React.Dispatch<React.SetStateAction<Product | null>>;
+    quickAddItem: string | null;
+    setQuickAddItem: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 /**
  * Cart, wishlist and compare state for the storefront, backed by localStorage.
  *
- * Placeholder data layer: `addProductToCart`/`quickViewItem` resolve an id against
- * `allProducts` in src/data/products.ts, the dummy catalog. Once the SDK is wired
- * in, swap that lookup for real product data — every consumer (ProductCard,
- * CartLength, WishlistLength) reads this context by shape, not by where the data
- * comes from, so nothing downstream needs to change.
+ * `addProductToCart` resolves an id against the real catalog (useCatalog, backed by
+ * @merchforge/storefront-sdk) — every consumer (ProductCard, CartLength,
+ * WishlistLength) reads this context by shape, not by where the data comes from, so
+ * nothing downstream needed to change when the data source did.
  *
  * The context object lives in ./shopContextObject.ts and the `useShopContext` hook
  * in ./useShopContext.ts — a file that exports both a component and a
  * context/hook breaks fast refresh.
  */
 export function ShopProvider({ children }: { children: ReactNode }) {
+    const { allProducts } = useCatalog();
+
     // Lazy initializers read localStorage exactly once, at mount — no effect
     // needed to "hydrate" state after the fact, and no render sees the empty
     // default before the stored value lands.
@@ -55,22 +56,22 @@ export function ShopProvider({ children }: { children: ReactNode }) {
         const stored = JSON.parse(localStorage.getItem("cartList") ?? "null") as CartItem[] | null;
         return stored?.length ? stored : [];
     });
-    const [wishList, setWishList] = useState<number[]>(() => {
-        const stored = JSON.parse(localStorage.getItem("wishlist") ?? "null") as number[] | null;
-        return stored?.length ? stored : [1, 2, 3];
+    const [wishList, setWishList] = useState<string[]>(() => {
+        const stored = JSON.parse(localStorage.getItem("wishlist") ?? "null") as string[] | null;
+        return stored?.length ? stored : [];
     });
-    const [compareItem, setCompareItem] = useState<number[]>([1, 2, 3]);
-    const [quickViewItem, setQuickViewItem] = useState<Product>(allProducts[0]);
-    const [quickAddItem, setQuickAddItem] = useState<number>(1);
+    const [compareItem, setCompareItem] = useState<string[]>([]);
+    const [quickViewItem, setQuickViewItem] = useState<Product | null>(null);
+    const [quickAddItem, setQuickAddItem] = useState<string | null>(null);
 
     // Derived from cartProducts every render rather than mirrored into its own
     // state — that would need an effect to stay in sync and would lag one render
     // behind every cart change.
     const totalPrice = cartProducts.reduce((accumulator, product) => accumulator + product.quantity * product.price, 0);
 
-    const isAddedToCartProducts = (id: number) => cartProducts.some((elm) => elm.id === id);
+    const isAddedToCartProducts = (id: string) => cartProducts.some((elm) => elm.id === id);
 
-    const addProductToCart = (id: number, qty?: number, isModal = true) => {
+    const addProductToCart = (id: string, qty?: number, isModal = true) => {
         if (isAddedToCartProducts(id)) {
             return;
         }
@@ -89,7 +90,7 @@ export function ShopProvider({ children }: { children: ReactNode }) {
         }
     };
 
-    const updateQuantity = (id: number, qty: number) => {
+    const updateQuantity = (id: string, qty: number) => {
         if (!isAddedToCartProducts(id)) {
             return;
         }
@@ -97,29 +98,29 @@ export function ShopProvider({ children }: { children: ReactNode }) {
         setCartProducts((pre) => pre.map((elm) => (elm.id === id ? { ...elm, quantity: qty } : elm)));
     };
 
-    const removeFromCart = (id: number) => {
+    const removeFromCart = (id: string) => {
         setCartProducts((pre) => pre.filter((elm) => elm.id !== id));
     };
 
-    const addToWishlist = (id: number) => {
+    const addToWishlist = (id: string) => {
         setWishList((pre) => (pre.includes(id) ? pre.filter((elm) => elm !== id) : [...pre, id]));
     };
 
-    const removeFromWishlist = (id: number) => {
+    const removeFromWishlist = (id: string) => {
         setWishList((pre) => pre.filter((elm) => elm !== id));
     };
 
-    const isAddedtoWishlist = (id: number) => wishList.includes(id);
+    const isAddedtoWishlist = (id: string) => wishList.includes(id);
 
-    const addToCompareItem = (id: number) => {
+    const addToCompareItem = (id: string) => {
         setCompareItem((pre) => (pre.includes(id) ? pre : [...pre, id]));
     };
 
-    const removeFromCompareItem = (id: number) => {
+    const removeFromCompareItem = (id: string) => {
         setCompareItem((pre) => pre.filter((elm) => elm !== id));
     };
 
-    const isAddedtoCompareItem = (id: number) => compareItem.includes(id);
+    const isAddedtoCompareItem = (id: string) => compareItem.includes(id);
 
     useEffect(() => {
         localStorage.setItem("cartList", JSON.stringify(cartProducts));

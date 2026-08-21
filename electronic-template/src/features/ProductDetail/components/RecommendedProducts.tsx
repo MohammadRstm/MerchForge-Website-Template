@@ -1,11 +1,12 @@
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import ProductCard10 from "../../../components/ProductCard10/ProductCard10";
-import { allProducts } from "../../../data/products";
-
-const recommended = allProducts.slice(0, 8);
+import { useCatalog } from "../../../hooks/useCatalog";
 
 export default function RecommendedProducts() {
+    const { allProducts } = useCatalog();
+    const recommended = allProducts.slice(0, 8);
+
     return (
         <section>
             <div className="container">

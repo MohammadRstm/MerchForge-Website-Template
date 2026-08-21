@@ -2,10 +2,12 @@ import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import CountdownTimer from "../../../components/Countdown/Countdown";
 import ProductCard3 from "../../../components/ProductCard3/ProductCard3";
-import { products2 } from "../../../data/products";
+import { useHomeSections } from "../../../hooks/useHomeSections";
 
 /** "Hot Deals" section: products with an active countdown. */
 export default function Products2() {
+    const { hotDeals } = useHomeSections();
+
     return (
         <section className="bg-surface flat-spacing-8">
             <div className="container">
@@ -38,7 +40,7 @@ export default function Products2() {
                         }}
                         modules={[Pagination, Navigation]}
                     >
-                        {products2.map((product, i) => (
+                        {hotDeals.map((product, i) => (
                             <SwiperSlide className="swiper-slide" key={i}>
                                 <ProductCard3 countdownStyle="style-2" product={product} />
                             </SwiperSlide>

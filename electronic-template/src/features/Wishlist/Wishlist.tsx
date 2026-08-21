@@ -2,10 +2,11 @@ import { Link } from "react-router-dom";
 import { useShopContext } from "../../context/Shop/useShopContext";
 import PageTitle from "../../components/PageTitle/PageTitle";
 import ProductCard12 from "../../components/ProductCard12/ProductCard12";
-import { allProducts } from "../../data/products";
+import { useCatalog } from "../../hooks/useCatalog";
 
 export default function Wishlist() {
     const { wishList } = useShopContext();
+    const { allProducts } = useCatalog();
     const items = allProducts.filter((product) => wishList.includes(product.id));
 
     return (

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import type { Swiper as SwiperClass } from "swiper";
 import { Navigation, Thumbs } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -7,44 +7,28 @@ import Drift from "drift-zoom";
 import type { Product } from "../../../types/product";
 
 interface GallerySlide {
-    color: string;
     imgSrc: string;
 }
 
 /**
  * The source template hardcodes an 8-slide Black/Yellow/Grey mock gallery here,
- * completely unrelated to whichever product is actually being viewed. Building the
- * slides from the product's own `colors` (falling back to imgSrc/imgHover when a
- * product has none) keeps the same click-a-swatch-jump-to-that-photo interaction
- * but makes the gallery actually show the product you're looking at.
+ * completely unrelated to whichever product is actually being viewed, and ties each
+ * slide to a color swatch. Real products don't have a photo per color variant — a
+ * color here is just a hex the merchant picked, not a distinct SKU/photo — so the
+ * gallery is built from the product's own uploaded photos instead, and no longer
+ * syncs with which swatch is selected in ColorSelect.
  */
 function buildSlides(product: Product): GallerySlide[] {
-    if (product.colors && product.colors.length > 0) {
-        const seen = new Set<string>();
-        return product.colors.filter((color) => {
-            if (seen.has(color.img)) return false;
-            seen.add(color.img);
-            return true;
-        }).map((color) => ({ color: color.label, imgSrc: color.img }));
-    }
-
-    const slides: GallerySlide[] = [{ color: "Default", imgSrc: product.imgSrc }];
-    if (product.imgHover && product.imgHover !== product.imgSrc) {
-        slides.push({ color: "Default", imgSrc: product.imgHover });
-    }
-    return slides;
+    return product.gallery.map((imgSrc) => ({ imgSrc }));
 }
 
 interface ProductGalleryProps {
     product: Product;
-    activeColor: string;
-    setActiveColor: (color: string) => void;
 }
 
-export default function ProductGallery({ product, activeColor, setActiveColor }: ProductGalleryProps) {
+export default function ProductGallery({ product }: ProductGalleryProps) {
     const slides = buildSlides(product);
     const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);
-    const mainSwiperRef = useRef<SwiperClass | null>(null);
 
     // Hover-zoom pane: only worth wiring up at desktop widths where the zoom pane
     // has room to render beside the image.
@@ -80,15 +64,6 @@ export default function ProductGallery({ product, activeColor, setActiveColor }:
         return () => lightbox.destroy();
     }, [product.id]);
 
-    // Jump the main slider to whichever slide matches the swatch just clicked in ColorSelect.
-    useEffect(() => {
-        const targetIndex = slides.findIndex((slide) => slide.color === activeColor);
-        if (targetIndex >= 0) {
-            mainSwiperRef.current?.slideTo(targetIndex);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps -- re-run only when the selected color changes, not on every slides recompute
-    }, [activeColor]);
-
     return (
         <>
             <Swiper
@@ -101,7 +76,7 @@ export default function ProductGallery({ product, activeColor, setActiveColor }:
                 spaceBetween={8}
             >
                 {slides.map((slide, index) => (
-                    <SwiperSlide key={index} className="swiper-slide stagger-item" data-color={slide.color}>
+                    <SwiperSlide key={index} className="swiper-slide stagger-item">
                         <div className="item">
                             <img className="lazyload" alt={product.title} src={slide.imgSrc} width={828} height={1241} />
                         </div>
@@ -116,11 +91,6 @@ export default function ProductGallery({ product, activeColor, setActiveColor }:
                     id="gallery-swiper-started"
                     thumbs={{ swiper: thumbsSwiper }}
                     navigation={{ prevEl: ".snbp1", nextEl: ".snbn1" }}
-                    onSwiper={(swiper) => (mainSwiperRef.current = swiper)}
-                    onSlideChange={(swiper) => {
-                        const slide = slides[swiper.activeIndex];
-                        if (slide) setActiveColor(slide.color);
-                    }}
                 >
                     {slides.map((slide, index) => (
                         <SwiperSlide key={index} className="swiper-slide">
