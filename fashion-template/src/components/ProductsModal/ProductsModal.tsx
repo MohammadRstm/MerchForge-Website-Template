@@ -3,11 +3,12 @@ import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import CountdownTimer from "../Countdown/Countdown";
 import ProductCard from "../ProductCard/ProductCard";
-import { products1 } from "../../data/products";
+import { useCatalog } from "../../hooks/useCatalog";
 
 /** The "Hurry up, deal ends in..." popup that opens automatically a few seconds after the page loads. */
 export default function ProductsModal() {
     const modalElement = useRef<HTMLDivElement>(null);
+    const { allProducts } = useCatalog();
 
     // A ref guard, not state: React 19's StrictMode runs this effect twice in
     // development (mount, cleanup, mount again), and a state-gated guard doesn't
@@ -136,7 +137,7 @@ export default function ProductsModal() {
                             }}
                             modules={[Pagination, Navigation]}
                         >
-                            {products1.slice(0, 5).map((product, i) => (
+                            {allProducts.slice(0, 5).map((product, i) => (
                                 <SwiperSlide key={i} className="swiper-slide">
                                     <ProductCard product={product} />
                                 </SwiperSlide>

@@ -1,11 +1,12 @@
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import ProductCard from "../../../components/ProductCard/ProductCard";
-import { allProducts } from "../../../data/products";
-
-const related = allProducts.slice(0, 8);
+import { useCatalog } from "../../../hooks/useCatalog";
 
 export default function RelatedProducts() {
+    const { allProducts } = useCatalog();
+    const related = allProducts.slice(0, 8);
+
     return (
         <section className="flat-spacing pt-0">
             <div className="container">

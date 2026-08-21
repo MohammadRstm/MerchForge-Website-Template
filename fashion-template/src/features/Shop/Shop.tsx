@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import PageTitle from "../../components/PageTitle/PageTitle";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import ShopToolbar, { type ShopCategory, type SortOption } from "./components/ShopToolbar";
-import { allProducts } from "../../data/products";
+import { useCatalog } from "../../hooks/useCatalog";
 
 const VALID_CATEGORIES: ShopCategory[] = ["all", "men", "women", "kids"];
 
@@ -18,6 +18,7 @@ export default function Shop() {
     const category = readCategory(searchParams);
     const [search, setSearch] = useState("");
     const [sort, setSort] = useState<SortOption>("default");
+    const { allProducts } = useCatalog();
 
     const handleCategoryChange = (next: ShopCategory) => {
         if (next === "all") {
@@ -46,7 +47,7 @@ export default function Shop() {
             default:
                 return result;
         }
-    }, [category, search, sort]);
+    }, [allProducts, category, search, sort]);
 
     return (
         <>

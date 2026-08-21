@@ -1,25 +1,26 @@
-/** A colour swatch on a product card: swaps the card image on hover. */
+/** A colour swatch on a product card/detail page. Rendered as a plain dot, not a photo swap -- see adapters/fromSdkProduct.ts. */
 export interface ProductColorOption {
-    label: string;
-    value: string;
-    img: string;
+    hex: string;
+    /** Best-effort human name for the tooltip (e.g. "Beige"), nearest-matched from `hex` -- the backend only stores the hex. */
+    name: string;
 }
 
 /** Which shop-page section a product belongs to. */
 export type ProductCategory = "men" | "women" | "kids";
 
 /**
- * Placeholder catalog shape, carried over from the template's dummy data.
- *
- * This is deliberately what the SDK's real `Product` type will replace once the
- * catalog is wired to @merchforge/storefront-sdk — kept narrow (only the fields the
- * home page's cards/sliders actually render) rather than porting the filter-page
- * fields (filterSizes/filterBrands/filterColor) that nothing here uses.
+ * Catalog shape the UI renders. Populated from @merchforge/storefront-sdk's own
+ * `Product`/`ProductDetail` via adapters/fromSdkProduct.ts rather than matching the
+ * SDK's shape 1:1 -- the SDK is deliberately generic (schemaless metadata, no
+ * `imgSrc`/`colors`/`sizes`), so every template maps it to whatever fields its own
+ * components were built around.
  */
 export interface Product {
-    id: number;
+    id: string;
     imgSrc: string;
     imgHover: string;
+    /** The full image gallery, in display order (always includes at least imgSrc). */
+    gallery: string[];
     width: number;
     height: number;
     title: string;

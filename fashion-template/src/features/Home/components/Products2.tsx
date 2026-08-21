@@ -1,10 +1,12 @@
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import ProductCard from "../../../components/ProductCard/ProductCard";
-import { products5 } from "../../../data/products";
+import { useHomeSections } from "../../../hooks/useHomeSections";
 
 /** "Limited Time Deals" section. */
 export default function Products2() {
+    const { limitedTimeDeals } = useHomeSections();
+
     return (
         <section>
             <div className="container">
@@ -32,7 +34,7 @@ export default function Products2() {
                         }}
                         modules={[Pagination, Navigation]}
                     >
-                        {products5.map((product, i) => (
+                        {limitedTimeDeals.map((product, i) => (
                             <SwiperSlide key={i}>
                                 <ProductCard product={product} styleClass={product.style} tooltipDirection="top" />
                             </SwiperSlide>

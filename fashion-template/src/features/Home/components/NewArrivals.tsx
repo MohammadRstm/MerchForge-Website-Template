@@ -1,20 +1,21 @@
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import ProductCard from "../../../components/ProductCard/ProductCard";
-import { allProducts } from "../../../data/products";
+import { useCatalog } from "../../../hooks/useCatalog";
 
 const NEW_ARRIVALS_COUNT = 8;
 
-/**
- * Sorted by `createdAt`, not array position — so once real product creation is
- * wired up, whatever gets added most recently shows up here automatically, which
- * is the whole point: a quick visual check that a newly-added product actually
- * made it into the catalog.
- */
-const newArrivals = [...allProducts].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, NEW_ARRIVALS_COUNT);
-
 /** "New Arrivals" section — the most recently added products, newest first. */
 export default function NewArrivals() {
+    const { allProducts } = useCatalog();
+
+    // Sorted by `createdAt`, not array position — whatever gets added most recently
+    // to the real catalog shows up here automatically, which is the whole point: a
+    // quick visual check that a newly-added product actually made it in.
+    const newArrivals = [...allProducts]
+        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+        .slice(0, NEW_ARRIVALS_COUNT);
+
     return (
         <section className="flat-spacing-3">
             <div className="container">

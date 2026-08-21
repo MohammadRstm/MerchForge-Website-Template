@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@merchforge/storefront-sdk": "file:../../MerchForgeSDK",
+    "@tanstack/react-query": "^5.101.4",
     "axios": "^1.19.0",
     "bootstrap": "^5.3.3",
     "drift-zoom": "^1.5.1",

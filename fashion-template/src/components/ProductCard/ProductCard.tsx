@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useShopContext } from "../../context/Shop/useShopContext";
 import CountdownTimer from "../Countdown/Countdown";
@@ -24,11 +23,6 @@ export default function ProductCard({
     textCenter = false,
     ratioClass = "",
 }: ProductCardProps) {
-    // Each slider/grid slot mounts one ProductCard per product and never swaps the
-    // product prop under a live instance, so the hover-swatch override only needs
-    // an initial value here — no effect required to keep it in sync with `product`.
-    const [currentImage, setCurrentImage] = useState(product.imgSrc);
-
     const {
         addToWishlist,
         isAddedtoWishlist,
@@ -50,7 +44,7 @@ export default function ProductCard({
         >
             <div className={`card-product-wrapper ${ratioClass}`}>
                 <Link to={`/product-detail/${product.id}`} className="product-img">
-                    <img className="img-product lazyload" alt={product.title} src={currentImage} width={513} height={729} />
+                    <img className="img-product lazyload" alt={product.title} src={product.imgSrc} width={513} height={729} />
                     <img className="img-hover lazyload" alt={product.title} src={product.imgHover} width={513} height={729} />
                 </Link>
 
@@ -172,14 +166,12 @@ export default function ProductCard({
                         {colors.map((color) => (
                             <li
                                 className={`list-color-item color-swatch hover-tooltip tooltip-bot ${
-                                    currentImage === color.img ? "active" : ""
-                                } ${color.value === "bg-white" ? "line" : ""}`}
-                                key={color.value}
-                                onMouseOver={() => setCurrentImage(color.img)}
+                                    color.hex.toUpperCase() === "#FFFFFF" ? "line" : ""
+                                }`}
+                                key={color.hex}
                             >
-                                <span className="tooltip color-filter">{color.label}</span>
-                                <span className={`swatch-value ${color.value}`} />
-                                <img className="lazyload" alt={color.label} src={color.img} width="684" height="972" />
+                                <span className="tooltip color-filter">{color.name}</span>
+                                <span className="swatch-value" style={{ backgroundColor: color.hex }} />
                             </li>
                         ))}
                     </ul>

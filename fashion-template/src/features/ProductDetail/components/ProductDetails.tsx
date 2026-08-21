@@ -15,7 +15,7 @@ interface ProductDetailsProps {
 /** The two-column media + info layout: gallery/zoom on the left, variant pickers and cart actions on the right. */
 export default function ProductDetails({ product }: ProductDetailsProps) {
     const [quantity, setQuantity] = useState(1);
-    const [activeColor, setActiveColor] = useState(product.colors?.[0]?.label ?? "Default");
+    const [activeColor, setActiveColor] = useState(product.colors?.[0]?.hex ?? "");
     const { addProductToCart, isAddedToCartProducts, addToWishlist, isAddedtoWishlist, addToCompareItem, isAddedtoCompareItem, cartProducts, updateQuantity } =
         useShopContext();
 
@@ -30,7 +30,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
                         <div className="col-md-6">
                             <div className="tf-product-media-wrap sticky-top">
                                 <div className="product-thumbs-slider">
-                                    <ProductGallery product={product} activeColor={activeColor} setActiveColor={setActiveColor} />
+                                    <ProductGallery product={product} />
                                 </div>
                             </div>
                         </div>

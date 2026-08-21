@@ -1,10 +1,12 @@
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import ProductCard from "../../../components/ProductCard/ProductCard";
-import { products4 } from "../../../data/products";
+import { useHomeSections } from "../../../hooks/useHomeSections";
 
 /** "Top Picks You'll Love" section. */
 export default function Products() {
+    const { topPicks } = useHomeSections();
+
     return (
         <section className="flat-spacing-3">
             <div className="container">
@@ -32,7 +34,7 @@ export default function Products() {
                         }}
                         modules={[Pagination, Navigation]}
                     >
-                        {products4.map((product, i) => (
+                        {topPicks.map((product, i) => (
                             <SwiperSlide key={i}>
                                 <ProductCard product={product} tooltipDirection="top" styleClass={product.style} />
                             </SwiperSlide>
