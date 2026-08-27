@@ -3,7 +3,6 @@ import type { Swiper as SwiperClass } from "swiper";
 import { Navigation, Thumbs } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import PhotoSwipeLightbox from "photoswipe/lightbox";
-import Drift from "drift-zoom";
 import type { Product } from "../../../types/product";
 
 interface GallerySlide {
@@ -29,29 +28,6 @@ interface ProductGalleryProps {
 export default function ProductGallery({ product }: ProductGalleryProps) {
     const slides = buildSlides(product);
     const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);
-
-    // Hover-zoom pane: only worth wiring up at desktop widths where the zoom pane
-    // has room to render beside the image.
-    useEffect(() => {
-        if (window.innerWidth < 1200) return;
-
-        const drifts: Drift[] = [];
-        const pane = document.querySelector(".tf-zoom-main");
-        document.querySelectorAll(".tf-image-zoom").forEach((el) => {
-            drifts.push(
-                new Drift(el, {
-                    zoomFactor: 2,
-                    paneContainer: pane,
-                    inlinePane: false,
-                    handleTouch: false,
-                    hoverBoundingBox: true,
-                    containInline: true,
-                })
-            );
-        });
-
-        return () => drifts.forEach((drift) => drift.destroy());
-    }, [product.id]);
 
     // Click-to-enlarge lightbox over the gallery.
     useEffect(() => {
@@ -95,14 +71,7 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
                     {slides.map((slide, index) => (
                         <SwiperSlide key={index} className="swiper-slide">
                             <a href={slide.imgSrc} target="_blank" rel="noreferrer" className="item" data-pswp-width="552px" data-pswp-height="827px">
-                                <img
-                                    className="tf-image-zoom lazyload"
-                                    data-zoom={slide.imgSrc}
-                                    alt={product.title}
-                                    src={slide.imgSrc}
-                                    width={828}
-                                    height={1241}
-                                />
+                                <img className="lazyload" alt={product.title} src={slide.imgSrc} width={828} height={1241} />
                             </a>
                         </SwiperSlide>
                     ))}

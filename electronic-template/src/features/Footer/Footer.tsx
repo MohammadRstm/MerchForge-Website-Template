@@ -67,7 +67,7 @@ export default function Footer() {
                     <div className="footer-top-wrap">
                         <div className="footer-logo">
                             <Link to="/">
-                                <img className="logo" alt="logo" src="/images/logo/logo.svg" width={148} height={44} />
+                                <span className="logo-text">Your Logo</span>
                             </Link>
                         </div>
                         <ul className="tf-social-icon style-large">

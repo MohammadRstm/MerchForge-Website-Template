@@ -1,3 +1,19 @@
+// Source template hardcodes the hero at a fixed 731px, which reads as
+// oversized on shorter viewports and undersized on taller ones. Viewport-
+// relative height keeps it filling roughly one screen regardless of monitor.
+.slider-electronic .slider-wrap {
+  height: 100vh;
+}
+
+.logo-text {
+  display: inline-block;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--dark);
+  white-space: nowrap;
+}
+
 @keyframes infiniteslide17418080312321156 {
   0% {
     transform: translate3d(0, 0, 0);
@@ -47,12 +63,6 @@
   button {
     transition: 0s !important;
   }
-}
-.zoom-magnifier-containing .drift-zoom-pane {
-  border-radius: 50%;
-  width: 150px !important;
-  height: 150px !important;
-  overflow: hidden;
 }
 // .swiper-horizontal {
 //   height: 100%;

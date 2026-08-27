@@ -34,7 +34,6 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
                             </div>
                         </div>
                         <div className="col-md-6">
-                            <div className="tf-zoom-main" />
                             <div className="tf-product-info-wrap position-relative">
                                 <div className="tf-product-info-list other-image-zoom">
                                     <ProductHeading product={product} />
