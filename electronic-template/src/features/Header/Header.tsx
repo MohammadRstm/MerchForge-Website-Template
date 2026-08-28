@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useCustomerAuth } from "@merchforge/storefront-sdk";
 import Nav from "./components/Nav";
 import LanguageSelect from "../../components/LanguageSelect/LanguageSelect";
 import CurrencySelect from "../../components/CurrencySelect/CurrencySelect";
@@ -7,6 +8,8 @@ import CartLength from "../../components/CartLength/CartLength";
 
 /** Site header: a top row (mobile-menu trigger, language/currency, centered logo, search/account/wishlist/cart) over a centered nav row -- the electronics template's own layout, distinct from the fashion template's single-row header. */
 export default function Header() {
+    const { isAuthenticated, login } = useCustomerAuth();
+
     return (
         <header id="header" className="header-default">
             <div className="header-top">
@@ -43,9 +46,22 @@ export default function Header() {
                                     </a>
                                 </li>
                                 <li className="nav-account">
-                                    <a href="#login" data-bs-toggle="offcanvas" className="nav-icon-item">
-                                        <i className="icon icon-user" />
-                                    </a>
+                                    {isAuthenticated ? (
+                                        <Link to="/account" className="nav-icon-item">
+                                            <i className="icon icon-user" />
+                                        </Link>
+                                    ) : (
+                                        <a
+                                            href="#"
+                                            className="nav-icon-item"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                login();
+                                            }}
+                                        >
+                                            <i className="icon icon-user" />
+                                        </a>
+                                    )}
                                 </li>
                                 <li className="nav-wishlist">
                                     <Link to="/wish-list" className="nav-icon-item">

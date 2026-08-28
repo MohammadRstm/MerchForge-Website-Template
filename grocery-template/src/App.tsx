@@ -10,6 +10,8 @@ import ProductDetail from "./features/ProductDetail/ProductDetail";
 import Cart from "./features/Cart/Cart";
 import Checkout from "./features/Checkout/Checkout";
 import OrderConfirmation from "./features/OrderConfirmation/OrderConfirmation";
+import AuthCallback from "./features/AuthCallback/AuthCallback";
+import Account from "./features/Account/Account";
 import Shop from "./features/Shop/Shop";
 import AboutUs from "./features/AboutUs/AboutUs";
 import ContactUs from "./features/ContactUs/ContactUs";
@@ -88,6 +90,8 @@ function App() {
                 <Route path="/view-cart" element={<Cart />} />
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/order-confirmation/:orderId" element={<OrderConfirmation />} />
+                <Route path="/auth/callback" element={<AuthCallback />} />
+                <Route path="/account" element={<Account />} />
                 <Route path="/shop-default" element={<Shop />} />
                 <Route path="/about-us" element={<AboutUs />} />
                 <Route path="/contact-us" element={<ContactUs />} />

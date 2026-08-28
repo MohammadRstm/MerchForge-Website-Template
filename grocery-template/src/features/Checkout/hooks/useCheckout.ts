@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useCreateOrder, MerchForgeApiError } from "@merchforge/storefront-sdk";
+import { useCreateOrder, useCustomerAuth, useCustomerProfile, MerchForgeApiError } from "@merchforge/storefront-sdk";
 import { useShopContext } from "../../../context/Shop/useShopContext";
 
 export type CheckoutFormValues = {
@@ -43,6 +43,33 @@ const useCheckout = () => {
     const [error, setError] = useState<string | undefined>(undefined);
 
     const { mutate, isPending } = useCreateOrder();
+
+    // Prefill from the saved profile when the customer is signed in — once, from
+    // whatever the profile happened to be when it first loaded. Never re-applied on a
+    // later refetch, and editing a field here never writes back to the saved profile
+    // ("we never assume" — see Account.tsx for the only place that actually saves).
+    const { isAuthenticated } = useCustomerAuth();
+    const { data: profile } = useCustomerProfile();
+    const prefilled = useRef(false);
+
+    useEffect(() => {
+        if (isAuthenticated && profile && !prefilled.current) {
+            prefilled.current = true;
+
+            setValues((prev) => ({
+                ...prev,
+                customerName: `${profile.firstName} ${profile.lastName}`.trim() || prev.customerName,
+                customerEmail: profile.email || prev.customerEmail,
+                customerPhone: profile.phone ?? prev.customerPhone,
+                shippingAddressLine1: profile.addressLine1 ?? prev.shippingAddressLine1,
+                shippingAddressLine2: profile.addressLine2 ?? prev.shippingAddressLine2,
+                shippingCity: profile.city ?? prev.shippingCity,
+                shippingState: profile.state ?? prev.shippingState,
+                shippingPostalCode: profile.postalCode ?? prev.shippingPostalCode,
+                shippingCountry: profile.country ?? prev.shippingCountry,
+            }));
+        }
+    }, [isAuthenticated, profile]);
 
     const change = (field: keyof CheckoutFormValues, value: string) => {
         setValues((prev) => ({ ...prev, [field]: value }));

@@ -21,4 +21,7 @@ export const env = {
     origin: apiOrigin,
     apiUrl: `${apiOrigin}/api`,
     businessId: required("VITE_BUSINESS_ID", import.meta.env.VITE_BUSINESS_ID),
+    // The MerchForge platform's own origin — where customer login/signup/silent-
+    // renewal live. See @merchforge/storefront-sdk's useCustomerAuth().
+    platformUrl: required("VITE_PLATFORM_ORIGIN", import.meta.env.VITE_PLATFORM_ORIGIN).replace(/\/+$/, ""),
 };
