@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useCustomerAuth } from "@merchforge/storefront-sdk";
 import Nav from "./components/Nav";
 import WishlistLength from "../../components/WishlistLength/WishlistLength";
 import CartLength from "../../components/CartLength/CartLength";
@@ -9,6 +10,8 @@ interface HeaderProps {
 
 /** Site header: mobile-menu trigger, mega-menu nav, logo, and the search/account/wishlist/cart icons. */
 export default function Header({ fullWidth = false }: HeaderProps) {
+    const { isAuthenticated, login } = useCustomerAuth();
+
     return (
         <header id="header" className="header-default">
             <div className={fullWidth ? "container-full" : "container"}>
@@ -41,9 +44,22 @@ export default function Header({ fullWidth = false }: HeaderProps) {
                                 </a>
                             </li>
                             <li className="nav-account">
-                                <a href="#login" data-bs-toggle="offcanvas" className="nav-icon-item">
-                                    <i className="icon icon-user" />
-                                </a>
+                                {isAuthenticated ? (
+                                    <Link to="/account" className="nav-icon-item">
+                                        <i className="icon icon-user" />
+                                    </Link>
+                                ) : (
+                                    <a
+                                        href="#"
+                                        className="nav-icon-item"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            login();
+                                        }}
+                                    >
+                                        <i className="icon icon-user" />
+                                    </a>
+                                )}
                             </li>
                             <li className="nav-wishlist">
                                 <Link to="/wish-list" className="nav-icon-item">

@@ -7,7 +7,7 @@ import { env } from "./config/env";
 
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
-        <MerchForgeProvider apiUrl={env.apiUrl} businessId={env.businessId}>
+        <MerchForgeProvider apiUrl={env.apiUrl} businessId={env.businessId} platformUrl={env.platformUrl}>
             <BrowserRouter>
                 <App />
             </BrowserRouter>
