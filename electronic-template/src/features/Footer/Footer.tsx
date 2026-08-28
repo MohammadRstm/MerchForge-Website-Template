@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useBusiness, resolveImageUrl } from "@merchforge/storefront-sdk";
+import SocialLinksList from "../../components/SocialLinksList/SocialLinksList";
+import { env } from "../../config/env";
+import { buildWhatsAppUrl, formatAddress } from "../../utils/business";
 
 const PAYMENT_LOGOS: Array<{ file: string; width: number; height: number }> = [
     { file: "EximBank", width: 80, height: 50 },
@@ -16,6 +20,11 @@ const PAYMENT_LOGOS: Array<{ file: string; width: number; height: number }> = [
 
 /** Site footer: contact info, newsletter form, link columns, and payment logos. */
 export default function Footer() {
+    const { data: business } = useBusiness();
+    const logoImageSrc = resolveImageUrl(business?.logoUrl, env.origin);
+    const address = business ? formatAddress(business) : null;
+    const whatsAppUrl = buildWhatsAppUrl(business?.whatsAppNumber);
+
     const [success, setSuccess] = useState(true);
     const [showMessage, setShowMessage] = useState(false);
 
@@ -67,31 +76,14 @@ export default function Footer() {
                     <div className="footer-top-wrap">
                         <div className="footer-logo">
                             <Link to="/">
-                                <span className="logo-text">Your Logo</span>
+                                {logoImageSrc ? (
+                                    <img className="logo" alt={business?.name ?? "logo"} src={logoImageSrc} height={44} />
+                                ) : (
+                                    <span className="logo-text">{business?.name ?? "Your Logo"}</span>
+                                )}
                             </Link>
                         </div>
-                        <ul className="tf-social-icon style-large">
-                            <li>
-                                <a href="https://www.facebook.com/" className="social-item social-facebook">
-                                    <i className="icon icon-fb" />
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://www.instagram.com/" className="social-item social-instagram">
-                                    <i className="icon icon-instagram" />
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://www.snapchat.com/" className="social-item social-linkedin">
-                                    <i className="icon icon-linkedin" />
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://x.com/" className="social-item social-x">
-                                    <i className="icon icon-x" />
-                                </a>
-                            </li>
-                        </ul>
+                        <SocialLinksList socialLinks={business?.socialLinks} />
                     </div>
                 </div>
             </div>
@@ -104,31 +96,58 @@ export default function Footer() {
                             <div className="tf-collapse-content">
                                 <div className="footer-contact">
                                     <ul className="footer-info">
-                                        <li className="item">
-                                            <span className="box-icon">
-                                                <i className="icon icon-location" />
-                                            </span>
-                                            <a target="_blank" href="https://www.google.com/maps" rel="noreferrer">
-                                                123 Yarran st, Punchbowl, NSW 2196, Australia
-                                            </a>
-                                        </li>
-                                        <li className="item">
-                                            <span className="box-icon">
-                                                <i className="icon icon-phone" />
-                                            </span>
-                                            <a href="tel:18888383022">(64) 8342 1245</a>
-                                        </li>
-                                        <li className="item">
-                                            <span className="box-icon">
-                                                <i className="icon icon-mail" />
-                                            </span>
-                                            support@example.com
-                                        </li>
+                                        {address && (
+                                            <li className="item">
+                                                <span className="box-icon">
+                                                    <i className="icon icon-location" />
+                                                </span>
+                                                <a
+                                                    target="_blank"
+                                                    href={`https://www.google.com/maps?q=${encodeURIComponent(address)}`}
+                                                    rel="noreferrer"
+                                                >
+                                                    {address}
+                                                </a>
+                                            </li>
+                                        )}
+                                        {business?.contactPhone && (
+                                            <li className="item">
+                                                <span className="box-icon">
+                                                    <i className="icon icon-phone" />
+                                                </span>
+                                                <a href={`tel:${business.contactPhone}`}>{business.contactPhone}</a>
+                                            </li>
+                                        )}
+                                        {whatsAppUrl && (
+                                            <li className="item">
+                                                <span className="box-icon">
+                                                    <i className="icon icon-phone" />
+                                                </span>
+                                                <a href={whatsAppUrl} target="_blank" rel="noreferrer">
+                                                    WhatsApp
+                                                </a>
+                                            </li>
+                                        )}
+                                        {business?.contactEmail && (
+                                            <li className="item">
+                                                <span className="box-icon">
+                                                    <i className="icon icon-mail" />
+                                                </span>
+                                                <a href={`mailto:${business.contactEmail}`}>{business.contactEmail}</a>
+                                            </li>
+                                        )}
                                     </ul>
-                                    <a href="https://www.google.com/maps" className="tf-btn btn-line-dark fw-normal">
-                                        <span className="text-sm">Get Direction</span>
-                                        <i className="icon-arrow-top-left fs-8" />
-                                    </a>
+                                    {address && (
+                                        <a
+                                            href={`https://www.google.com/maps?q=${encodeURIComponent(address)}`}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="tf-btn btn-line-dark fw-normal"
+                                        >
+                                            <span className="text-sm">Get Direction</span>
+                                            <i className="icon-arrow-top-left fs-8" />
+                                        </a>
+                                    )}
                                 </div>
                             </div>
                         </div>

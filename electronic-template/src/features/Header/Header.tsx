@@ -1,14 +1,17 @@
 import { Link } from "react-router-dom";
-import { useCustomerAuth } from "@merchforge/storefront-sdk";
+import { useBusiness, useCustomerAuth, resolveImageUrl } from "@merchforge/storefront-sdk";
 import Nav from "./components/Nav";
 import LanguageSelect from "../../components/LanguageSelect/LanguageSelect";
 import CurrencySelect from "../../components/CurrencySelect/CurrencySelect";
 import WishlistLength from "../../components/WishlistLength/WishlistLength";
 import CartLength from "../../components/CartLength/CartLength";
+import { env } from "../../config/env";
 
 /** Site header: a top row (mobile-menu trigger, language/currency, centered logo, search/account/wishlist/cart) over a centered nav row -- the electronics template's own layout, distinct from the fashion template's single-row header. */
 export default function Header() {
     const { isAuthenticated, login } = useCustomerAuth();
+    const { data: business } = useBusiness();
+    const logoImageSrc = resolveImageUrl(business?.logoUrl, env.origin);
 
     return (
         <header id="header" className="header-default">
@@ -34,7 +37,11 @@ export default function Header() {
 
                         <div className="col-xl-2 col-md-4 col-6 text-center">
                             <Link to="/" className="logo-header">
-                                <span className="logo-text">Your Logo</span>
+                                {logoImageSrc ? (
+                                    <img alt={business?.name ?? "logo"} className="logo" src={logoImageSrc} height={44} />
+                                ) : (
+                                    <span className="logo-text">{business?.name ?? "Your Logo"}</span>
+                                )}
                             </Link>
                         </div>
 
