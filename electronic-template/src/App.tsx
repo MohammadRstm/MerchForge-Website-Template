@@ -8,6 +8,8 @@ import Footer from "./features/Footer/Footer";
 import Home from "./features/Home/Home";
 import ProductDetail from "./features/ProductDetail/ProductDetail";
 import Cart from "./features/Cart/Cart";
+import Checkout from "./features/Checkout/Checkout";
+import OrderConfirmation from "./features/OrderConfirmation/OrderConfirmation";
 import Wishlist from "./features/Wishlist/Wishlist";
 import Shop from "./features/Shop/Shop";
 import AboutUs from "./features/AboutUs/AboutUs";
@@ -85,6 +87,8 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/product-detail/:id" element={<ProductDetail />} />
                 <Route path="/view-cart" element={<Cart />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/order-confirmation/:orderId" element={<OrderConfirmation />} />
                 <Route path="/wish-list" element={<Wishlist />} />
                 <Route path="/shop-default" element={<Shop />} />
                 <Route path="/about-us" element={<AboutUs />} />
