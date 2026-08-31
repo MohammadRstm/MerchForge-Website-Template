@@ -1,7 +1,10 @@
 import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
+import { useBusiness } from "@merchforge/storefront-sdk";
 import "../public/scss/main.scss";
 import { ShopProvider } from "./context/Shop/ShopContext";
+import { ErrorBoundary } from "./components/ErrorBoundary/ErrorBoundary";
+import StoreUnavailable from "./components/StoreUnavailable/StoreUnavailable";
 import Topbar from "./features/Header/components/Topbar";
 import Header from "./features/Header/Header";
 import Footer from "./features/Footer/Footer";
@@ -22,6 +25,12 @@ import ScrollTop from "./components/ScrollTop/ScrollTop";
 import WOW from "./utlis/wow";
 
 function App() {
+    // A business that genuinely fails to load (unknown/misconfigured businessId,
+    // or the API being unreachable) means there's nothing real to show anywhere
+    // in the app — checked once, here, rather than in every component that reads
+    // business data.
+    const { isError: businessError, isLoading: businessLoading } = useBusiness();
+
     // Bootstrap's JS (offcanvas, modal, tab-switching) is only ever used client-side
     // and pulls in its own DOM globals, so it's loaded dynamically after mount
     // rather than imported at the top of the module.
@@ -80,28 +89,34 @@ function App() {
         wow.init();
     }, []);
 
+    if (businessError && !businessLoading) {
+        return <StoreUnavailable />;
+    }
+
     return (
-        <ShopProvider>
-            <Topbar />
-            <Header />
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/product-detail/:id" element={<ProductDetail />} />
-                <Route path="/view-cart" element={<Cart />} />
-                <Route path="/checkout" element={<Checkout />} />
-                <Route path="/order-confirmation/:orderId" element={<OrderConfirmation />} />
-                <Route path="/auth/callback" element={<AuthCallback />} />
-                <Route path="/account" element={<Account />} />
-                <Route path="/shop-default" element={<Shop />} />
-                <Route path="/about-us" element={<AboutUs />} />
-                <Route path="/contact-us" element={<ContactUs />} />
-                <Route path="/store-location" element={<StoreLocation />} />
-                <Route path="/coming-soon" element={<ComingSoon />} />
-                <Route path="*" element={<NotFound />} />
-            </Routes>
-            <Footer />
-            <ScrollTop />
-        </ShopProvider>
+        <ErrorBoundary>
+            <ShopProvider>
+                <Topbar />
+                <Header />
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/product-detail/:id" element={<ProductDetail />} />
+                    <Route path="/view-cart" element={<Cart />} />
+                    <Route path="/checkout" element={<Checkout />} />
+                    <Route path="/order-confirmation/:orderId" element={<OrderConfirmation />} />
+                    <Route path="/auth/callback" element={<AuthCallback />} />
+                    <Route path="/account" element={<Account />} />
+                    <Route path="/shop-default" element={<Shop />} />
+                    <Route path="/about-us" element={<AboutUs />} />
+                    <Route path="/contact-us" element={<ContactUs />} />
+                    <Route path="/store-location" element={<StoreLocation />} />
+                    <Route path="/coming-soon" element={<ComingSoon />} />
+                    <Route path="*" element={<NotFound />} />
+                </Routes>
+                <Footer />
+                <ScrollTop />
+            </ShopProvider>
+        </ErrorBoundary>
     );
 }
 

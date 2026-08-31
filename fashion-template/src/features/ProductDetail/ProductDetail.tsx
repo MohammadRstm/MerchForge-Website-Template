@@ -1,7 +1,6 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useProduct } from "@merchforge/storefront-sdk";
 import { toTemplateProduct } from "../../adapters/fromSdkProduct";
-import { useCatalog } from "../../hooks/useCatalog";
 import Breadcrumb from "./components/Breadcrumb";
 import ProductDetails from "./components/ProductDetails";
 import StickyProducts from "./components/StickyProducts";
@@ -10,16 +9,17 @@ import RecommendedProducts from "./components/RecommendedProducts";
 import RecentlyViewedProducts from "./components/RecentlyViewedProducts";
 
 /**
- * Fetches this one product by id rather than searching a static array. Falls back to
- * the first catalog product on a bad/unknown id instead of a not-found state,
- * matching the source template's own behavior of never showing an empty page.
+ * Fetches this one product by id rather than searching a static array. A bad,
+ * stale, or deleted-product id shows a real not-found state rather than silently
+ * substituting a different, arbitrary product from the catalog — a shopper
+ * following a dead link deserves to know the product is actually gone, not land
+ * on a wrong one with no indication anything was off.
  */
 export default function ProductDetail() {
     const { id } = useParams();
     const { data, isLoading, isError } = useProduct(id ?? "");
-    const { allProducts, isLoading: catalogLoading } = useCatalog();
 
-    if (isLoading || (isError && catalogLoading)) {
+    if (isLoading) {
         return (
             <div className="container flat-spacing-24 text-center">
                 <p>Loading product...</p>
@@ -27,15 +27,21 @@ export default function ProductDetail() {
         );
     }
 
-    const product = data ? toTemplateProduct(data) : allProducts[0];
-
-    if (!product) {
+    if (isError || !data) {
         return (
             <div className="container flat-spacing-24 text-center">
-                <p>This product isn't available right now.</p>
+                <h4 className="mb-3">We couldn't find that product.</h4>
+                <p className="mb-3">
+                    It may have been removed or the link may be out of date.
+                </p>
+                <Link className="tf-btn btn-dark2 animate-btn" to="/shop-default">
+                    Continue shopping
+                </Link>
             </div>
         );
     }
+
+    const product = toTemplateProduct(data);
 
     return (
         <>
