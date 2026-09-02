@@ -9,8 +9,9 @@ import { cartTestimonials } from "../../../data/testimonials";
 /**
  * Gift wrap, discount code and shipping-estimate are decorative in the source
  * template too (no backend to apply them to) — preserved as static controls rather
- * than fabricating fake discount/shipping logic. Checkout/terms links point at
- * routes this "for now" scope doesn't build yet, so they land on the not-found page.
+ * than fabricating fake discount/shipping logic. Checkout now leads to a real
+ * Checkout page (see src/features/Checkout); the terms-and-conditions link still
+ * has no page behind it.
  */
 export default function ShopCart() {
     const { cartProducts, totalPrice, updateQuantity, removeFromCart } = useShopContext();

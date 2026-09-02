@@ -1,13 +1,19 @@
 import { Link } from "react-router-dom";
+import { useBusiness, useCustomerAuth, resolveImageUrl } from "@merchforge/storefront-sdk";
 import Nav from "./components/Nav";
 import CartLength from "../../components/CartLength/CartLength";
+import { env } from "../../config/env";
 
 interface HeaderProps {
     fullWidth?: boolean;
 }
 
-/** Site header: mobile-menu trigger, mega-menu nav, logo, and the search/cart icons. No login or wishlist -- not useful for this storefront. */
+/** Site header: mobile-menu trigger, mega-menu nav, logo, and the search/account/cart icons. No wishlist -- not useful for this storefront. */
 export default function Header({ fullWidth = false }: HeaderProps) {
+    const { isAuthenticated, login } = useCustomerAuth();
+    const { data: business } = useBusiness();
+    const logoSrc = resolveImageUrl(business?.logoUrl, env.origin) ?? "/images/logo/logo.svg";
+
     return (
         <header id="header" className="header-default">
             <div className={fullWidth ? "container-full" : "container"}>
@@ -28,7 +34,7 @@ export default function Header({ fullWidth = false }: HeaderProps) {
 
                     <div className="col-xl-2 col-md-4 col-6 text-xxl-center">
                         <Link to="/" className="logo-header">
-                            <img alt="logo" className="logo" src="/images/logo/logo.svg" width={148} height={44} />
+                            <img alt={business?.name ?? "logo"} className="logo" src={logoSrc} width={148} height={44} />
                         </Link>
                     </div>
 
@@ -38,6 +44,24 @@ export default function Header({ fullWidth = false }: HeaderProps) {
                                 <a href="#search" data-bs-toggle="modal" className="nav-icon-item">
                                     <i className="icon icon-search" />
                                 </a>
+                            </li>
+                            <li className="nav-account">
+                                {isAuthenticated ? (
+                                    <Link to="/account" className="nav-icon-item">
+                                        <i className="icon icon-user" />
+                                    </Link>
+                                ) : (
+                                    <a
+                                        href="#"
+                                        className="nav-icon-item"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            login();
+                                        }}
+                                    >
+                                        <i className="icon icon-user" />
+                                    </a>
+                                )}
                             </li>
                             <li className="nav-cart">
                                 <Link to="/view-cart" className="nav-icon-item">

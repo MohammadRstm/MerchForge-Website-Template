@@ -18,7 +18,7 @@ export default function Shop() {
     const category = readCategory(searchParams);
     const [search, setSearch] = useState("");
     const [sort, setSort] = useState<SortOption>("default");
-    const { allProducts } = useCatalog();
+    const { allProducts, isLoading, isError } = useCatalog();
 
     const handleCategoryChange = (next: ShopCategory) => {
         if (next === "all") {
@@ -64,12 +64,23 @@ export default function Shop() {
                         resultCount={products.length}
                     />
 
-                    {products.length ? (
+                    {isLoading ? (
+                        <div className="text-center py-5">Loading products...</div>
+                    ) : isError ? (
+                        <div className="text-center py-5">
+                            <p className="mb-3">We couldn't load the catalog right now.</p>
+                            <button type="button" className="tf-btn btn-dark2 animate-btn" onClick={() => window.location.reload()}>
+                                Try again
+                            </button>
+                        </div>
+                    ) : products.length ? (
                         <div className="wrapper-shop tf-grid-layout tf-col-2 lg-col-3 xl-col-4 style-1">
                             {products.map((product) => (
                                 <ProductCard key={product.id} product={product} />
                             ))}
                         </div>
+                    ) : allProducts.length === 0 ? (
+                        <div className="text-center py-5">This store doesn't have any products yet.</div>
                     ) : (
                         <div className="text-center py-5">No products match your filters.</div>
                     )}
