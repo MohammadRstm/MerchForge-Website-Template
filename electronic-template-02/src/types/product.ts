@@ -39,6 +39,11 @@ export interface Product {
     category: ProductCategory;
     /** ISO date the product was added to the catalog. */
     createdAt: string;
+    /** Mean of this product's visible reviews. Null when it has none — never 0, so
+     *  "not rated yet" stays distinguishable from a genuinely low score. */
+    averageRating: number | null;
+    /** How many visible reviews the average is drawn from. */
+    reviewCount: number;
     colors?: ProductColorOption[];
     /** Stacked badges, e.g. ["20% Off", "Trending"]. Never null; empty when none. */
     saleLabel: string[];

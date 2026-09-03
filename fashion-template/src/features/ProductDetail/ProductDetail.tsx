@@ -47,7 +47,7 @@ export default function ProductDetail() {
         <>
             <Breadcrumb product={product} />
             <ProductDetails product={product} />
-            <DescriptionTabs />
+            <DescriptionTabs productId={product.id} />
             <RecommendedProducts />
             <RecentlyViewedProducts />
             <StickyProducts product={product} />

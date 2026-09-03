@@ -124,6 +124,8 @@ export function toTemplateProduct(product: SdkProduct): Product {
         inStock: stockStatus !== "out-of-stock",
         category: toCategory(product.category.name),
         createdAt: product.createdAt,
+        averageRating: product.averageRating,
+        reviewCount: product.reviewCount,
         colors: toColorOptions(product),
         saleLabel,
         countdownTimer:

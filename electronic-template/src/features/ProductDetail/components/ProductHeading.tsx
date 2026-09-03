@@ -1,4 +1,6 @@
 import type { Product } from "../../../types/product";
+import StarRating from "../../../components/StarRating/StarRating";
+import { openReviewsSection } from "../utils/openReviewsSection";
 
 interface ProductHeadingProps {
     product: Product;
@@ -16,16 +18,20 @@ export default function ProductHeading({ product }: ProductHeadingProps) {
     return (
         <div className={`tf-product-heading ${inStock ? "" : "pb-0 border-0"}`}>
             <h5 className="product-name fw-medium">{product.title}</h5>
-            <div className="product-rate">
-                <div className="list-star">
-                    <i className="icon icon-star" />
-                    <i className="icon icon-star" />
-                    <i className="icon icon-star" />
-                    <i className="icon icon-star" />
-                    <i className="icon icon-star" />
-                </div>
-                <span className="count-review">(5 reviews)</span>
-            </div>
+            {/* Clicking through opens the Reviews accordion rather than jumping to a
+                collapsed, zero-height anchor — see openReviewsSection. */}
+            <button
+                type="button"
+                className="mf-product-rate-link"
+                onClick={openReviewsSection}
+                aria-label={
+                    product.reviewCount === 0
+                        ? "No reviews yet. Go to reviews."
+                        : `See all ${product.reviewCount} reviews`
+                }
+            >
+                <StarRating value={product.averageRating ?? 0} reviewCount={product.reviewCount} />
+            </button>
             <div className="product-price">
                 <div className="display-sm price-new price-on-sale">${product.price.toFixed(2)}</div>
                 {product.oldPrice && <div className="display-sm price-old">${product.oldPrice.toFixed(2)}</div>}

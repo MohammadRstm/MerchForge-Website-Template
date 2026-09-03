@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useShopContext } from "../../context/Shop/useShopContext";
 import CountdownTimer from "../Countdown/Countdown";
 import type { Product } from "../../types/product";
+import StarRating from "../StarRating/StarRating";
 
 interface ProductCard12Props {
     product: Product;
@@ -82,6 +83,16 @@ export default function ProductCard12({ product, tooltipDirection = "top", textC
                 <Link to={`/product-detail/${product.id}`} className="name-product link fw-medium text-md">
                     {product.title}
                 </Link>
+                {/* Only shown once a product actually has reviews: a grid where every
+                    unreviewed card carries five greyed-out stars is just noise. */}
+                {product.reviewCount > 0 && (
+                    <StarRating
+                        value={product.averageRating ?? 0}
+                        reviewCount={product.reviewCount}
+                        className="mf-card-rate"
+                    />
+                )}
+
                 <p className="price-wrap fw-medium">
                     <span className={`price-new ${product.oldPrice ? "text-primary" : ""}`}>${product.price.toFixed(2)}</span>{" "}
                     {product.oldPrice && <span className="price-old text-dark">${product.oldPrice.toFixed(2)}</span>}
