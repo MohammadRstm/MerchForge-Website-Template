@@ -143,10 +143,18 @@
 
    `.mf-star-0` is deliberate rather than an absence: an unreviewed product renders
    five greyed stars, not five filled ones. */
+/* Deliberately does NOT carry the theme's `.list-star` class. That class opts into
+   `.wd-customer-review .review-item .review-content .list-star .icon`, a five-class
+   rule that paints every star `--dark` and outranks anything reasonable here — which
+   showed up as *empty* stars rendering solid black inside the review list. Owning the
+   styling outright is simpler than escalating specificity against the theme. */
 .mf-star {
   display: flex;
   align-items: center;
+  gap: 5px;
+  margin-right: 6px;
   .icon {
+    font-size: 15px;
     color: #d2d2d2;
   }
 }
@@ -156,12 +164,11 @@
 .mf-star-3 .icon:nth-child(-n + 3),
 .mf-star-4 .icon:nth-child(-n + 4),
 .mf-star-5 .icon:nth-child(-n + 5) {
-  color: var(--dark);
+  color: #98ab23;
 }
 
-/* Inside the review list the theme colours stars via `--dark`; on a card the
-   surrounding `.product-rate` rule repaints every `.icon` olive, which would defeat
-   the greying above. Re-assert the filled/empty split at the same specificity. */
+/* `.product-rate .icon` repaints every star olive on a card and in the product
+   heading, which would defeat the greying above. */
 .product-rate .mf-star .icon {
   color: #d2d2d2;
 }

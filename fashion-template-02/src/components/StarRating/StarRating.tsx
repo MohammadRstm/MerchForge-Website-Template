@@ -25,7 +25,7 @@ export default function StarRating({ value, reviewCount, className }: StarRating
 
     return (
         <div className={`product-rate ${className ?? ""}`}>
-            <div className={`list-star mf-star mf-star-${filled}`} role="img" aria-label={label}>
+            <div className={`mf-star mf-star-${filled}`} role="img" aria-label={label}>
                 {Array.from({ length: 5 }, (_, index) => (
                     <i className="icon icon-star" key={index} aria-hidden="true" />
                 ))}
