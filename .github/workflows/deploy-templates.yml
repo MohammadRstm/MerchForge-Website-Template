@@ -46,7 +46,10 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # Vite 8 and @vitejs/plugin-react declare "^20.19.0 || >=22.12.0".
+          # Node 20 would satisfy that only on its very latest patches, and it is
+          # out of support anyway, so this takes the branch the toolchain prefers.
+          node-version: 22
 
       - name: Position and build the SDK
         run: |
