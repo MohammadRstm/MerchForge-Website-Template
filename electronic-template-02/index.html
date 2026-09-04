@@ -5,6 +5,31 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>electronic-template-02</title>
+    <script>
+      // GitHub Pages has no server-side rewrite, so a client-side route like
+      // /fashion-template/product/123 is not a real file and Pages answers with the
+      // site's root 404.html. That page re-encodes the route into a query string and
+      // sends the browser here; this puts it back before React Router mounts, so a
+      // deep link or a refresh lands where it should instead of on a 404.
+      //
+      // Inert everywhere else: nothing but that redirect ever produces a "?/" query,
+      // so local dev and root-hosted builds skip it entirely.
+      (function (location) {
+        if (location.search[1] !== "/") return;
+
+        var route = location.search
+          .slice(1)
+          .split("&")
+          .map(function (part) { return part.replace(/~and~/g, "&"); })
+          .join("?");
+
+        window.history.replaceState(
+          null,
+          "",
+          location.pathname.replace(/\/$/, "") + route + location.hash
+        );
+      })(window.location);
+    </script>
   </head>
   <body>
     <div id="root"></div>
