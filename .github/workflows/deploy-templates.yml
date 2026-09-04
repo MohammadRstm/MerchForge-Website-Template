@@ -51,12 +51,27 @@ jobs:
           # out of support anyway, so this takes the branch the toolchain prefers.
           node-version: 22
 
+          # Six installs run in this job - one per template plus the SDK - and every
+          # one of them was downloading its whole dependency tree from the registry.
+          # This restores the shared ~/.npm download cache instead, so only packages
+          # nothing else has already fetched cross the network. The templates overlap
+          # heavily, so most of the later installs cost nothing to fetch.
+          cache: npm
+
+          # Glob rather than a list, for the same reason nothing else here names a
+          # template: adding a folder must not mean editing this file. The SDK is
+          # named because it is checked out to a dot-prefixed path, which a leading
+          # wildcard is not guaranteed to match.
+          cache-dependency-path: |
+            */package-lock.json
+            .merchforge-sdk/package-lock.json
+
       - name: Position and build the SDK
         run: |
           set -euo pipefail
           mv .merchforge-sdk "${GITHUB_WORKSPACE}/../MerchForgeSDK"
           cd "${GITHUB_WORKSPACE}/../MerchForgeSDK"
-          npm install
+          npm install --prefer-offline --no-audit --no-fund
           npm run build
 
       - name: Discover templates
@@ -148,7 +163,7 @@ jobs:
             if (
               set -euo pipefail
               cd "$template"
-              npm install
+              npm install --prefer-offline --no-audit --no-fund
               BASE_PATH="${site_base}${template}/" npm run build
               node ../scripts/apply-pages-base.mjs dist "${site_base}${template}/" public
             ); then
