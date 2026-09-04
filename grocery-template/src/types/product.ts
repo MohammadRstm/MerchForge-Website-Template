@@ -34,6 +34,11 @@ export interface Product {
     category: ProductCategory;
     /** ISO date the product was added to the catalog — drives the "New Arrivals" section. */
     createdAt: string;
+    /** Mean of this product's visible reviews. Null when it has none — never 0, so
+     *  "not rated yet" stays distinguishable from a genuinely low score. */
+    averageRating: number | null;
+    /** How many visible reviews the average is drawn from. */
+    reviewCount: number;
     sizes?: string[];
     colors?: ProductColorOption[];
     saleLabel?: string | null;

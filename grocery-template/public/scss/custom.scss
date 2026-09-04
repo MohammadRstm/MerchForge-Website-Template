@@ -133,3 +133,109 @@
     transform: translate3d(-148.0625px, 0, 0);
   }
 }
+
+/* ---- Product reviews ----
+   The theme's own partial-star modifiers (.star-1 .. .star-4) live in
+   component/_product.scss but are scoped to
+   `.wd-customer-review .review-item .review-content .list-star`, so they do nothing
+   on a product card or a product heading. These `.mf-star-N` classes are the same
+   idea, unscoped, so one StarRating component works everywhere.
+
+   `.mf-star-0` is deliberate rather than an absence: an unreviewed product renders
+   five greyed stars, not five filled ones. */
+/* Deliberately does NOT carry the theme's `.list-star` class. That class opts into
+   `.wd-customer-review .review-item .review-content .list-star .icon`, a five-class
+   rule that paints every star `--dark` and outranks anything reasonable here — which
+   showed up as *empty* stars rendering solid black inside the review list. Owning the
+   styling outright is simpler than escalating specificity against the theme. */
+.mf-star {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-right: 6px;
+  .icon {
+    font-size: 15px;
+    color: #d2d2d2;
+  }
+}
+
+.mf-star-1 .icon:nth-child(-n + 1),
+.mf-star-2 .icon:nth-child(-n + 2),
+.mf-star-3 .icon:nth-child(-n + 3),
+.mf-star-4 .icon:nth-child(-n + 4),
+.mf-star-5 .icon:nth-child(-n + 5) {
+  color: #98ab23;
+}
+
+/* `.product-rate .icon` repaints every star olive on a card and in the product
+   heading, which would defeat the greying above. */
+.product-rate .mf-star .icon {
+  color: #d2d2d2;
+}
+
+.product-rate .mf-star-1 .icon:nth-child(-n + 1),
+.product-rate .mf-star-2 .icon:nth-child(-n + 2),
+.product-rate .mf-star-3 .icon:nth-child(-n + 3),
+.product-rate .mf-star-4 .icon:nth-child(-n + 4),
+.product-rate .mf-star-5 .icon:nth-child(-n + 5) {
+  color: #98ab23;
+}
+
+/* The review form's states: a signed-out prompt and a "buyers only" notice sit where
+   the form would be, so the section never looks broken or empty. */
+.mf-review-gate {
+  padding: 20px 0;
+  .mf-review-gate__text {
+    margin-bottom: 12px;
+  }
+}
+
+.mf-review-status {
+  margin-top: 12px;
+  &.is-error {
+    color: #d64545;
+  }
+}
+
+/* The ratings histogram. `.rating-breakdown-item` / `.rating-bar` / `.value` are
+   already fully styled in component/_product.scss and were never used by any
+   template, which is why one gap survived: `.rating-bar` is `width: 100%` inside a
+   flex row with no `flex-grow`, so it collapses to nothing and the bars render as
+   dots. `flex: 1` is what that unused CSS was missing. */
+.mf-rating-breakdown {
+  margin-top: 4px;
+  /* .rating-bar is `width: 100%` with no flex-grow inside a flex row, so without this
+     it collapses to nothing — the one gap in the theme's never-used histogram CSS. */
+  .rating-bar {
+    flex: 1;
+  }
+}
+
+/* ProductHeading's rating is a button so it can open the collapsed Reviews accordion,
+   but it must still look like the inline text it replaced. */
+.mf-product-rate-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.mf-review-pagination {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+/* Ratings on a product card sit tighter than on the detail page. */
+.mf-card-rate {
+  margin-bottom: 4px;
+  .icon {
+    font-size: 13px;
+  }
+  .count-review {
+    font-size: 13px;
+  }
+}
