@@ -173,12 +173,25 @@ jobs:
       - name: Write the site root
         env:
           PAGES_BASE: ${{ vars.PAGES_BASE }}
+          PAGES_DOMAIN: ${{ vars.PAGES_DOMAIN }}
         run: |
           set -euo pipefail
           # Resolved the same way as the build step above.
           site_base="${PAGES_BASE:-/${GITHUB_REPOSITORY#*/}/}"
           case "$site_base" in */) ;; *) site_base="${site_base}/" ;; esac
           node scripts/make-site-shell.mjs _site "$site_base" $(cat templates.txt)
+
+          # The custom domain lives in repository settings, but a Pages deployment
+          # made from an artifact with no CNAME file can clear it, which would drop
+          # the site back to its github.io address without warning. Writing the file
+          # keeps the setting and the published artifact in agreement. Skipped
+          # entirely unless the PAGES_DOMAIN variable is set, so a plain project-site
+          # deployment behaves exactly as before.
+          if [ -n "${PAGES_DOMAIN:-}" ]; then
+            echo "$PAGES_DOMAIN" > _site/CNAME
+            echo "Custom domain: $PAGES_DOMAIN"
+          fi
+
           echo "Published tree:"; find _site -maxdepth 2 -name index.html | sort | sed 's/^/  /'
 
       - name: Upload the Pages artifact
