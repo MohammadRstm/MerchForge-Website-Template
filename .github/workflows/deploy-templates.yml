@@ -1,0 +1,197 @@
+name: Deploy templates to GitHub Pages
+
+# Every template at the repository root is discovered, built and published under
+# its own folder name. Adding a template means adding the folder - there is
+# deliberately no per-template block anywhere in this file.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Pages needs to write a deployment; nothing here needs write access to the code.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time. Not cancel-in-progress: a half-replaced site is worse
+# than a queued run finishing.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out templates
+        uses: actions/checkout@v4
+
+      # Every template depends on the SDK as "file:../../MerchForgeSDK", a path
+      # beside the repository rather than inside it. actions/checkout will not
+      # write outside the workspace, so it lands inside and is moved up a level -
+      # which is what makes that path resolve on a runner. The SDK publishes no
+      # build output to git, so it is built here too.
+      - name: Check out the storefront SDK
+        uses: actions/checkout@v4
+        with:
+          repository: MohammadRstm/MerchForgeSDK
+          path: .merchforge-sdk
+          # Only needed while the SDK repository is private: the default token
+          # cannot read another repository. Harmless once it is public.
+          token: ${{ secrets.SDK_ACCESS_TOKEN || github.token }}
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Position and build the SDK
+        run: |
+          set -euo pipefail
+          mv .merchforge-sdk "${GITHUB_WORKSPACE}/../MerchForgeSDK"
+          cd "${GITHUB_WORKSPACE}/../MerchForgeSDK"
+          npm install
+          npm run build
+
+      - name: Discover templates
+        run: |
+          set -euo pipefail
+          node scripts/list-templates.mjs > templates.txt
+          echo "Found:"; sed 's/^/  /' templates.txt
+
+      # Checked before anything is built. A production build must never fall back
+      # to the local development API: .env is not in the repository, so the only
+      # source here is the repository variables, and a missing one would otherwise
+      # surface as five identical failures well into the run.
+      - name: Check the production configuration
+        env:
+          REPO_VARS: ${{ toJSON(vars) }}
+          FALLBACK_API_ORIGIN: ${{ secrets.VITE_API_ORIGIN }}
+          FALLBACK_PLATFORM_ORIGIN: ${{ secrets.VITE_PLATFORM_ORIGIN }}
+          FALLBACK_BUSINESS_ID: ${{ secrets.VITE_BUSINESS_ID }}
+        run: |
+          set -uo pipefail
+          echo "Resolving build configuration for each template:"
+
+          incomplete=0
+          while IFS= read -r template; do
+            [ -n "$template" ] || continue
+            node scripts/template-env.mjs "$template" --check || incomplete=1
+          done < templates.txt
+
+          if [ "$incomplete" -ne 0 ]; then
+            cat <<'MESSAGE'
+
+          Nothing was built. Set the missing values under
+          Settings -> Secrets and variables -> Actions -> Variables:
+
+            VITE_API_ORIGIN        the publicly reachable MerchForge API
+            VITE_PLATFORM_ORIGIN   the MerchForge platform, for customer login
+            VITE_BUSINESS_ID       which business catalog to render
+
+          Any of them can be set per template by appending the folder name,
+          uppercased with dashes as underscores, e.g.
+          VITE_BUSINESS_ID_FASHION_TEMPLATE.
+
+          These are build-time values compiled into the shipped JavaScript, so they
+          belong in Variables rather than Secrets. Local development is unaffected -
+          it reads each template's own .env, which is not in this repository.
+          MESSAGE
+            exit 1
+          fi
+
+      # One job rather than a matrix on purpose: the SDK has to be built once and
+      # shared, and a matrix would rebuild it per template for no gain on a handful
+      # of small Vite apps.
+      - name: Build every template
+        env:
+          # Every VITE_* value ends up in the shipped JavaScript, so none of them
+          # are secret. They are read from repository *variables*, with a secrets
+          # fallback only so an existing setup keeps working. Passing the whole set
+          # as JSON is what keeps per-template configuration out of this file: a new
+          # template just needs its own variable, not a workflow edit.
+          REPO_VARS: ${{ toJSON(vars) }}
+          FALLBACK_API_ORIGIN: ${{ secrets.VITE_API_ORIGIN }}
+          FALLBACK_PLATFORM_ORIGIN: ${{ secrets.VITE_PLATFORM_ORIGIN }}
+          FALLBACK_BUSINESS_ID: ${{ secrets.VITE_BUSINESS_ID }}
+          PAGES_BASE: ${{ vars.PAGES_BASE }}
+        run: |
+          set -uo pipefail
+
+          # Where the site is served from. Defaults to /<repository>/, which is
+          # correct for a github.io project site and stays correct if the repository
+          # is renamed or forked. A custom domain on Pages serves at the domain root
+          # instead, so set the PAGES_BASE variable to "/" for that case - the
+          # deep-link 404 handler derives its segment count from this too.
+          site_base="${PAGES_BASE:-/${GITHUB_REPOSITORY#*/}/}"
+          case "$site_base" in */) ;; *) site_base="${site_base}/" ;; esac
+          echo "Site base: ${site_base}"
+
+          mkdir -p _site
+          failed=()
+
+          while IFS= read -r template; do
+            [ -n "$template" ] || continue
+            echo "::group::Building ${template}"
+
+            # A template may override any VITE_* value with a variable suffixed by
+            # its own name, e.g. VITE_BUSINESS_ID_FASHION_TEMPLATE. Otherwise the
+            # shared value is used.
+            eval "$(node scripts/template-env.mjs "$template")"
+
+            if (
+              set -euo pipefail
+              cd "$template"
+              npm install
+              BASE_PATH="${site_base}${template}/" npm run build
+              node ../scripts/apply-pages-base.mjs dist "${site_base}${template}/" public
+            ); then
+              mkdir -p "_site/${template}"
+              cp -r "${template}/dist/." "_site/${template}/"
+              echo "${template} -> SUCCESS"
+            else
+              failed+=("$template")
+              echo "::error title=Template build failed::${template} did not build"
+            fi
+
+            echo "::endgroup::"
+          done < templates.txt
+
+          if [ ${#failed[@]} -gt 0 ]; then
+            echo "Failed: ${failed[*]}"
+            echo "Nothing is deployed when any template fails, so the published site"
+            echo "never silently loses one."
+            exit 1
+          fi
+
+      - name: Write the site root
+        env:
+          PAGES_BASE: ${{ vars.PAGES_BASE }}
+        run: |
+          set -euo pipefail
+          # Resolved the same way as the build step above.
+          site_base="${PAGES_BASE:-/${GITHUB_REPOSITORY#*/}/}"
+          case "$site_base" in */) ;; *) site_base="${site_base}/" ;; esac
+          node scripts/make-site-shell.mjs _site "$site_base" $(cat templates.txt)
+          echo "Published tree:"; find _site -maxdepth 2 -name index.html | sort | sed 's/^/  /'
+
+      - name: Upload the Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
