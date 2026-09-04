@@ -3,6 +3,11 @@ import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
 export default defineConfig({
+  // Where this template will be served from. Local dev and a plain `npm run build`
+  // use the domain root, exactly as before; the deployment workflow sets BASE_PATH
+  // to the template's own subdirectory on GitHub Pages. Nothing about the Pages URL
+  // is hardcoded here - see README, "Base-path handling".
+  base: process.env.BASE_PATH ?? '/',
   plugins: [react()],
   // Explicit IPv4 host: this Node/OS combination resolves "localhost" to ::1 first,
   // and without this Vite's default dev server binds only that -- browser tooling

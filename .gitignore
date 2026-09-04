@@ -1,0 +1,9 @@
+# Repository-level ignores. Each template keeps its own .gitignore for its
+# node_modules, dist and .env.
+
+# The assembled GitHub Pages site. Produced by the deployment workflow, and by a
+# local run of the build loop documented in the README.
+_site/
+
+# Written by the discovery step during a workflow run.
+templates.txt
