@@ -51,12 +51,27 @@ jobs:
           # out of support anyway, so this takes the branch the toolchain prefers.
           node-version: 22
 
+          # Six installs run in this job - one per template plus the SDK - and every
+          # one of them was downloading its whole dependency tree from the registry.
+          # This restores the shared ~/.npm download cache instead, so only packages
+          # nothing else has already fetched cross the network. The templates overlap
+          # heavily, so most of the later installs cost nothing to fetch.
+          cache: npm
+
+          # Glob rather than a list, for the same reason nothing else here names a
+          # template: adding a folder must not mean editing this file. The SDK is
+          # named because it is checked out to a dot-prefixed path, which a leading
+          # wildcard is not guaranteed to match.
+          cache-dependency-path: |
+            */package-lock.json
+            .merchforge-sdk/package-lock.json
+
       - name: Position and build the SDK
         run: |
           set -euo pipefail
           mv .merchforge-sdk "${GITHUB_WORKSPACE}/../MerchForgeSDK"
           cd "${GITHUB_WORKSPACE}/../MerchForgeSDK"
-          npm install
+          npm install --prefer-offline --no-audit --no-fund
           npm run build
 
       - name: Discover templates
@@ -148,7 +163,7 @@ jobs:
             if (
               set -euo pipefail
               cd "$template"
-              npm install
+              npm install --prefer-offline --no-audit --no-fund
               BASE_PATH="${site_base}${template}/" npm run build
               node ../scripts/apply-pages-base.mjs dist "${site_base}${template}/" public
             ); then
@@ -173,12 +188,25 @@ jobs:
       - name: Write the site root
         env:
           PAGES_BASE: ${{ vars.PAGES_BASE }}
+          PAGES_DOMAIN: ${{ vars.PAGES_DOMAIN }}
         run: |
           set -euo pipefail
           # Resolved the same way as the build step above.
           site_base="${PAGES_BASE:-/${GITHUB_REPOSITORY#*/}/}"
           case "$site_base" in */) ;; *) site_base="${site_base}/" ;; esac
           node scripts/make-site-shell.mjs _site "$site_base" $(cat templates.txt)
+
+          # The custom domain lives in repository settings, but a Pages deployment
+          # made from an artifact with no CNAME file can clear it, which would drop
+          # the site back to its github.io address without warning. Writing the file
+          # keeps the setting and the published artifact in agreement. Skipped
+          # entirely unless the PAGES_DOMAIN variable is set, so a plain project-site
+          # deployment behaves exactly as before.
+          if [ -n "${PAGES_DOMAIN:-}" ]; then
+            echo "$PAGES_DOMAIN" > _site/CNAME
+            echo "Custom domain: $PAGES_DOMAIN"
+          fi
+
           echo "Published tree:"; find _site -maxdepth 2 -name index.html | sort | sed 's/^/  /'
 
       - name: Upload the Pages artifact

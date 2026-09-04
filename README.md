@@ -35,13 +35,23 @@ A custom domain on Pages serves the site from the domain root instead, so the
 repository segment disappears:
 
 ```
-https://templates.merchforge.com/
-https://templates.merchforge.com/fashion-template/
+https://templates.merchforge.site/
+https://templates.merchforge.site/fashion-template/
 ```
 
-Set the `PAGES_BASE` repository variable to `/` for that case. The deep-link
-handler derives how much of the path is the site rather than the route from the
-same value, so nothing else changes.
+Two repository variables cover it:
+
+| Variable | Value | Why |
+|---|---|---|
+| `PAGES_BASE` | `/` | The site is served from the domain root, so the repository segment disappears. The deep-link handler derives how much of the path is the site rather than the route from this same value, so nothing else changes. |
+| `PAGES_DOMAIN` | `templates.merchforge.site` | Written into the artifact as `CNAME`. GitHub keeps the custom domain in repository settings, but a deployment whose artifact lacks that file can clear it and drop the site back to its `github.io` address. |
+
+Both are unset for a plain project site, which is why neither the domain nor the
+repository name appears anywhere in the workflow.
+
+The DNS record belongs to the domain, not to this repository: a `CNAME` for the
+subdomain pointing at `<username>.github.io`, left unproxied so GitHub can
+complete its own certificate validation.
 
 ## Adding a template
 
